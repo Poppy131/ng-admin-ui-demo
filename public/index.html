@@ -1,180 +1,116 @@
 <!DOCTYPE html>
 <html lang="en" data-ng-app="app">
 <head>
-    <meta charset="utf-8"/>
-    <title>后台管理系统</title>
-    <meta name="description" content="后台管理系统"/>
-    <meta name="keywords" content="后台 管理"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" type="text/css"/>
-    <link rel="stylesheet" href="./bower_components/animate.css/animate.css" type="text/css"/>
-    <link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css" type="text/css"/>
-    <link rel="stylesheet" href="./bower_components/simple-line-icons/css/simple-line-icons.css" type="text/css"/>
-    <link rel="stylesheet" href="./bower_components/ng-sortable/dist/ng-sortable.css"/>
-    <link rel="stylesheet" href="./bower_components/angularjs-toaster/toaster.css"/>
-    <link rel="stylesheet" href="./bower_components/jqGrid/css/ui.jqgrid-bootstrap.css"/>
+  <meta charset="utf-8"/>
+  <title>后台管理系统</title>
+  <meta name="description" content="后台管理系统"/>
+  <meta name="keywords" content="后台 管理"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css"
+        type="text/css"/>
+  <link rel="stylesheet" href="components/animate.css/animate.css"
+        type="text/css"/>
+  <link rel="stylesheet" href="components/font-awesome/css/font-awesome.min.css"
+        type="text/css"/>
+  <link rel="stylesheet"
+        href="components/simple-line-icons/css/simple-line-icons.css"
+        type="text/css"/>
+  <link rel="stylesheet" href="components/ng-sortable/dist/ng-sortable.css"/>
+  <link rel="stylesheet" href="components/angularjs-toaster/toaster.css"/>
+  <link rel="stylesheet" href="components/jqGrid/css/ui.jqgrid-bootstrap.css"/>
 
-    <link rel="stylesheet" href="css/font.css" type="text/css"/>
-    <link rel="stylesheet" href="css/app.css" type="text/css"/>
-    <link rel="stylesheet" href="css/custom.css" type="text/css"/>
+  <link rel="stylesheet" href="css/font.css" type="text/css"/>
+  <link rel="stylesheet" href="css/app.css" type="text/css"/>
+  <link rel="stylesheet" href="css/custom.css" type="text/css"/>
 </head>
-<body>
-<div class="app app-aside-fixed" id="app">
-    <div data-ng-include=" 'tpl/blocks/header.html' " class="app-header navbar">
-        <div class="navbar-header bg-info dker">
-            <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
-                <i class="glyphicon glyphicon-cog"></i>
-            </button>
-            <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside"
-                    ui-scroll-to="app">
-                <i class="glyphicon glyphicon-align-justify"></i>
-            </button>
-            <!-- brand -->
-            <a href="#/" class="navbar-brand text-lt">
-                <i class="fa fa-ship"></i>
-                <img src="img/logo.png" alt="." class="hide">
-                <span class="hidden-folded m-l-xs">后台管理</span>
-            </a>
-            <!-- / brand -->
-        </div>
-        <!-- / navbar header -->
+<body ng-controller="AppCtrl">
+<div class="app" id="app"
+     ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}"
+     ui-view></div>
 
-        <!-- navbar collapse -->
-        <div class="collapse pos-rlt navbar-collapse box-shadow {{app.settings.navbarCollapseColor}}">
-            <!-- buttons -->
-            <div class="nav navbar-nav hidden-xs">
-                <a href class="btn no-shadow navbar-btn"
-                   ng-click="app.settings.asideFolded = !app.settings.asideFolded">
-                    <i class="fa {{app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}} fa-fw"></i>
-                </a>
-            </div>
-            <!-- / buttons -->
+<!-- jQuery -->
+<script src="components/jquery/dist/jquery.min.js"></script>
+<!-- jquery.blockUI -->
+<script src="components/blockUI/jquery.blockUI.js"></script>
+<!-- jqGrid -->
+<script src="components/jqGrid/js/i18n/grid.locale-cn.js"></script>
+<script src="components/jqGrid/js/jquery.jqGrid.min.js"></script>
 
-            <!-- nabar right -->
-            <ul class="nav navbar-nav navbar-right">
-                <li class="hidden-xs">
-                    <a ui-fullscreen></a>
-                </li>
-                <li class="dropdown" dropdown>
-                    <a href class="dropdown-toggle clear" dropdown-toggle>
-              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
-                <img src="{{ app.profile.avatarUrl }}" alt="...">
-              </span>
-                        <span class="hidden-sm hidden-md">{{ app.profile.name || app.profile.login }}</span> <b
-                            class="caret"></b>
-                    </a>
-                    <!-- dropdown -->
-                    <ul class="dropdown-menu animated fadeInRight w">
-                        <li>
-                            <a ui-sref="app.page.profile">个人中心</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href ng-click="logout()">退出登录</a>
-                        </li>
-                    </ul>
-                    <!-- / dropdown -->
-                </li>
-            </ul>
+<!-- Angular -->
+<script src="components/angular/angular.js"></script>
 
-        </div>
-    </div>
+<!-- Chinese support -->
+<script
+  src="components/angular-locale/angular-locale_zh-cn.js"></script>
+<script src="components/angular-animate/angular-animate.js"></script>
+<script src="components/angular-cookies/angular-cookies.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="components/angular-sanitize/angular-sanitize.js"></script>
+<script src="components/angular-touch/angular-touch.js"></script>
 
-    <div class="app-aside hidden-xs bg-dark">
-        <div class="aside-wrap">
-            <div class="navi-wrap">
-                <nav ui-nav class="navi clearfix" ng-include="'tpl/nav.html'">
-                    <!--nav -->
-                    <ul class="nav">
-                        <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-                            <span>社保和公积金后台管理系统</span>
-                        </li>
-                        <!-- 商品管理 -->
-                        <li ng-class="{active:$state.includes('app.productMgmt')}" check-permissions="product:view">
-                            <a href class="auto">
-      <span class="pull-right text-muted">
-        <i class="fa fa-fw fa-angle-right text"></i>
-        <i class="fa fa-fw fa-angle-down text-active"></i>
-      </span>
-                                <i class="fa fa-book"></i>
-                                <span class="font-bold">帮助配置</span>
-                            </a>
-                            <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active">
-                                    <a ui-sref="app.productMgmt.productList">
-                                        <span>社保</span>
-                                    </a>
-                                </li>
-                                <li ui-sref-active="active">
-                                    <a ui-sref="app.productMgmt.productOrigin">
-                                        <span>公积金</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- 商城活动管理 -->
-                        <li ng-class="{active:$state.includes('app.activityMgmt')}" check-permissions="activity:view">
-                            <a href class="auto">
-      <span class="pull-right text-muted">
-        <i class="fa fa-fw fa-angle-right text"></i>
-        <i class="fa fa-fw fa-angle-down text-active"></i>
-      </span>
-                                <i class="fa fa-tags"></i>
-                                <span class="font-bold">异常处理</span>
-                            </a>
-                            <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active">
-                                    <a ui-sref="app.activityMgmt.productActivity">
-                                        <span>社保</span>
-                                    </a>
-                                </li>
-                                <li ui-sref-active="active">
-                                    <a ui-sref="app.activityMgmt.orderActivity">
-                                        <span>公积金</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- 优惠券管理 -->
-                        <li ng-class="{active:$state.includes('app.couponMgmt')}"
-                            check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
-                            <a href class="auto">
-      <span class="pull-right text-muted">
-        <i class="fa fa-fw fa-angle-right text"></i>
-        <i class="fa fa-fw fa-angle-down text-active"></i>
-      </span>
-                                <i class="fa fa-gift"></i>
-                                <span class="font-bold">统计</span>
-                            </a>
-                            <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active"
-                                    check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
-                                    <a ui-sref="app.couponMgmt.couponSetting">
-                                        <span>社保</span>
-                                    </a>
-                                </li>
-                                <li ui-sref-active="active"
-                                    check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
-                                    <a ui-sref="app.couponMgmt.couponSetting">
-                                        <span>公积金</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <!--nav-->
-                </nav>
-            </div>
-        </div>
-    </div>
+<script
+  src="components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="components/ngstorage/ngStorage.js"></script>
+<script src="components/angular-ui-utils/ui-utils.js"></script>
 
-    <!-- content -->
-    <div class="app-content h-full" ng-class="{'m-n': app.hideAside, 'h-full': app.hideFooter }">
-        <div ui-butterbar></div>
-        <a href class="off-screen-toggle hide" ui-toggle-class="off-screen" data-target=".app-aside"></a>
-        <!-- LxC: remove `fade-in-up` from below div class, disable animation -->
-        <div class="app-content-body" ng-class="{'app-content-full h-full': app.hideFooter}" ui-view></div>
-    </div>
-    <!-- /content -->
-</div>
+<!-- bootstrap -->
+<script
+  src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<!-- lazyload -->
+<script src="components/oclazyload/dist/ocLazyLoad.js"></script>
+
+<!-- ng-sortable -->
+<script src="components/ng-sortable/dist/ng-sortable.js"></script>
+<!-- angularjs-toaster -->
+<script src="components/angularjs-toaster/toaster.js"></script>
+<!-- moment -->
+<script src="components/moment/moment.js"></script>
+<script src="components/moment/locale/zh-cn.js"></script>
+
+<!-- App -->
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/config.js"></script>
+<script src="js/config.web.js"></script>
+<script src="js/config.lazyload.js"></script>
+<script src="js/config.router.js"></script>
+<!--<script src="js/config.http.js"></script>-->
+<script src="js/main.js"></script>
+<script src="js/services/ui-load.js"></script>
+<!--<script src="js/services/block-ui.js"></script>-->
+<!--<script src="js/services/user-store.js"></script>-->
+<!--<script src="js/services/msg-util.js"></script>-->
+<!--<script src="js/services/resize-service.js"></script>-->
+<!--<script src="js/filters/fromNow.js"></script>-->
+<!--<script src="js/filters/formatImageUrl.js"></script>-->
+<!--<script src="js/directives/setnganimate.js"></script>-->
+<!--<script src="js/directives/check-permissions.js"></script>-->
+<!--<script src="js/directives/ui-butterbar.js"></script>-->
+<!--<script src="js/directives/ui-focus.js"></script>-->
+<!--<script src="js/directives/ui-fullscreen.js"></script>-->
+<!--<script src="js/directives/ui-jq.js"></script>-->
+<!--<script src="js/directives/ui-jqgrid.js"></script>-->
+<!--<script src="js/directives/ui-module.js"></script>-->
+<!--<script src="js/directives/ui-nav.js"></script>-->
+<!--<script src="js/directives/ui-scroll.js"></script>-->
+<!--<script src="js/directives/ui-shift.js"></script>-->
+<!--<script src="js/directives/ui-toggleclass.js"></script>-->
+<!--<script src="js/directives/ui-dropzone.js"></script>-->
+<!--<script src="js/directives/maxlength-single-keyword.js"></script>-->
+<!--<script src="js/directives/maxlength-trim.js"></script>-->
+<!--<script src="js/directives/validate-number.js"></script>-->
+<!--<script src="js/directives/validate-range.js"></script>-->
+<!--<script src="js/directives/preview_image.js"></script>-->
+<!--<script src="js/directives/home-link.js"></script>-->
+<!--<script src="js/directives/common-coupon.js"></script>-->
+<!--<script src="js/directives/image-slide.js"></script>-->
+<!--<script src="js/directives/format-digit.js"></script>-->
+
+
+<!--<script src="js/controllers/bootstrap.js"></script>-->
+
+<!--<script src="js/services/product-service.js"></script>-->
+<!-- Lazy loading -->
 </body>
+</html>
