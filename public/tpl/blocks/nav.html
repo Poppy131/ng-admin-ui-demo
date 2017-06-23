@@ -1,0 +1,81 @@
+<!--nav -->
+<ul class="nav">
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span>社保和公积金后台管理系统</span>
+  </li>
+  <!-- 帮助配置 -->
+  <li ng-class="{active:$state.includes('app.helpSetting')}"
+      check-permissions="helpSetting:view">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="fa fa-cogs"></i>
+      <span class="font-bold">帮助配置</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="app.helpSetting.shebao">
+          <span>社保</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.helpSetting.gjj">
+          <span>公积金</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- 异常处理 -->
+  <li ng-class="{active:$state.includes('app.exceptionMgmt')}"
+      check-permissions="exceptionMgmt:view">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="fa fa-user-times"></i>
+      <span class="font-bold">异常管理</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="app.activityMgmt.productActivity">
+          <span>社保</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.activityMgmt.orderActivity">
+          <span>公积金</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- 优惠券管理 -->
+  <li ng-class="{active:$state.includes('app.couponMgmt')}"
+      check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="fa fa-bar-chart-o"></i>
+      <span class="font-bold">统计</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active"
+          check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+        <a ui-sref="app.couponMgmt.couponSetting">
+          <span>社保</span>
+        </a>
+      </li>
+      <li ui-sref-active="active"
+          check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+        <a ui-sref="app.couponMgmt.couponSetting">
+          <span>公积金</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<!--nav-->
