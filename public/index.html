@@ -1,76 +1,180 @@
-<!-- list -->
-<ul class="nav">
-    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-        <span>社保后台</span>
-    </li>
-    <!-- 商品管理 -->
-    <li ng-class="{active:$state.includes('app.productMgmt')}" check-permissions="product:view">
-        <a href class="auto">
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
+<head>
+    <meta charset="utf-8"/>
+    <title>后台管理系统</title>
+    <meta name="description" content="后台管理系统"/>
+    <meta name="keywords" content="后台 管理"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="./bower_components/animate.css/animate.css" type="text/css"/>
+    <link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="./bower_components/simple-line-icons/css/simple-line-icons.css" type="text/css"/>
+    <link rel="stylesheet" href="./bower_components/ng-sortable/dist/ng-sortable.css"/>
+    <link rel="stylesheet" href="./bower_components/angularjs-toaster/toaster.css"/>
+    <link rel="stylesheet" href="./bower_components/jqGrid/css/ui.jqgrid-bootstrap.css"/>
+
+    <link rel="stylesheet" href="css/font.css" type="text/css"/>
+    <link rel="stylesheet" href="css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="css/custom.css" type="text/css"/>
+</head>
+<body>
+<div class="app app-aside-fixed" id="app">
+    <div data-ng-include=" 'tpl/blocks/header.html' " class="app-header navbar">
+        <div class="navbar-header bg-info dker">
+            <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
+                <i class="glyphicon glyphicon-cog"></i>
+            </button>
+            <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside"
+                    ui-scroll-to="app">
+                <i class="glyphicon glyphicon-align-justify"></i>
+            </button>
+            <!-- brand -->
+            <a href="#/" class="navbar-brand text-lt">
+                <i class="fa fa-ship"></i>
+                <img src="img/logo.png" alt="." class="hide">
+                <span class="hidden-folded m-l-xs">后台管理</span>
+            </a>
+            <!-- / brand -->
+        </div>
+        <!-- / navbar header -->
+
+        <!-- navbar collapse -->
+        <div class="collapse pos-rlt navbar-collapse box-shadow {{app.settings.navbarCollapseColor}}">
+            <!-- buttons -->
+            <div class="nav navbar-nav hidden-xs">
+                <a href class="btn no-shadow navbar-btn"
+                   ng-click="app.settings.asideFolded = !app.settings.asideFolded">
+                    <i class="fa {{app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}} fa-fw"></i>
+                </a>
+            </div>
+            <!-- / buttons -->
+
+            <!-- nabar right -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="hidden-xs">
+                    <a ui-fullscreen></a>
+                </li>
+                <li class="dropdown" dropdown>
+                    <a href class="dropdown-toggle clear" dropdown-toggle>
+              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                <img src="{{ app.profile.avatarUrl }}" alt="...">
+              </span>
+                        <span class="hidden-sm hidden-md">{{ app.profile.name || app.profile.login }}</span> <b
+                            class="caret"></b>
+                    </a>
+                    <!-- dropdown -->
+                    <ul class="dropdown-menu animated fadeInRight w">
+                        <li>
+                            <a ui-sref="app.page.profile">个人中心</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href ng-click="logout()">退出登录</a>
+                        </li>
+                    </ul>
+                    <!-- / dropdown -->
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="app-aside hidden-xs bg-dark">
+        <div class="aside-wrap">
+            <div class="navi-wrap">
+                <nav ui-nav class="navi clearfix" ng-include="'tpl/nav.html'">
+                    <!--nav -->
+                    <ul class="nav">
+                        <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                            <span>社保和公积金后台管理系统</span>
+                        </li>
+                        <!-- 商品管理 -->
+                        <li ng-class="{active:$state.includes('app.productMgmt')}" check-permissions="product:view">
+                            <a href class="auto">
       <span class="pull-right text-muted">
         <i class="fa fa-fw fa-angle-right text"></i>
         <i class="fa fa-fw fa-angle-down text-active"></i>
       </span>
-            <i class="fa fa-book"></i>
-            <span class="font-bold">帮助配置</span>
-        </a>
-        <ul class="nav nav-sub dk">
-            <li ui-sref-active="active">
-                <a ui-sref="app.productMgmt.productList">
-                    <span>社保</span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref="app.productMgmt.productOrigin">
-                    <span>公积金</span>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <!-- 商城活动管理 -->
-    <li ng-class="{active:$state.includes('app.activityMgmt')}" check-permissions="activity:view">
-        <a href class="auto">
+                                <i class="fa fa-book"></i>
+                                <span class="font-bold">帮助配置</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li ui-sref-active="active">
+                                    <a ui-sref="app.productMgmt.productList">
+                                        <span>社保</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="app.productMgmt.productOrigin">
+                                        <span>公积金</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- 商城活动管理 -->
+                        <li ng-class="{active:$state.includes('app.activityMgmt')}" check-permissions="activity:view">
+                            <a href class="auto">
       <span class="pull-right text-muted">
         <i class="fa fa-fw fa-angle-right text"></i>
         <i class="fa fa-fw fa-angle-down text-active"></i>
       </span>
-            <i class="fa fa-tags"></i>
-            <span class="font-bold">异常处理</span>
-        </a>
-        <ul class="nav nav-sub dk">
-            <li ui-sref-active="active">
-                <a ui-sref="app.activityMgmt.productActivity">
-                    <span>社保</span>
-                </a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref="app.activityMgmt.orderActivity">
-                    <span>公积金</span>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <!-- 优惠券管理 -->
-    <li ng-class="{active:$state.includes('app.couponMgmt')}" check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
-        <a href class="auto">
+                                <i class="fa fa-tags"></i>
+                                <span class="font-bold">异常处理</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li ui-sref-active="active">
+                                    <a ui-sref="app.activityMgmt.productActivity">
+                                        <span>社保</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="app.activityMgmt.orderActivity">
+                                        <span>公积金</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- 优惠券管理 -->
+                        <li ng-class="{active:$state.includes('app.couponMgmt')}"
+                            check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+                            <a href class="auto">
       <span class="pull-right text-muted">
         <i class="fa fa-fw fa-angle-right text"></i>
         <i class="fa fa-fw fa-angle-down text-active"></i>
       </span>
-            <i class="fa fa-gift"></i>
-            <span class="font-bold">统计</span>
-        </a>
-        <ul class="nav nav-sub dk">
-            <li ui-sref-active="active" check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
-                <a ui-sref="app.couponMgmt.couponSetting">
-                    <span>社保</span>
-                </a>
-            </li>
-            <li ui-sref-active="active" check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
-                <a ui-sref="app.couponMgmt.couponSetting">
-                    <span>公积金</span>
-                </a>
-            </li>
-        </ul>
-    </li>
-</ul>
-<!-- / list -->
+                                <i class="fa fa-gift"></i>
+                                <span class="font-bold">统计</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li ui-sref-active="active"
+                                    check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+                                    <a ui-sref="app.couponMgmt.couponSetting">
+                                        <span>社保</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active"
+                                    check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+                                    <a ui-sref="app.couponMgmt.couponSetting">
+                                        <span>公积金</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!--nav-->
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- content -->
+    <div class="app-content h-full" ng-class="{'m-n': app.hideAside, 'h-full': app.hideFooter }">
+        <div ui-butterbar></div>
+        <a href class="off-screen-toggle hide" ui-toggle-class="off-screen" data-target=".app-aside"></a>
+        <!-- LxC: remove `fade-in-up` from below div class, disable animation -->
+        <div class="app-content-body" ng-class="{'app-content-full h-full': app.hideFooter}" ui-view></div>
+    </div>
+    <!-- /content -->
+</div>
+</body>
