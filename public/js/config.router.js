@@ -26,6 +26,7 @@ angular.module('app')
           url: '/app',
           templateUrl: 'tpl/app.html'
         })
+
         // 帮助配置
         .state('app.helpSetting', {
           url: '/helpSetting',
@@ -36,7 +37,7 @@ angular.module('app')
           templateUrl: 'tpl/helpSetting/shebao.html',
           resolve: {
             deps: ['uiLoad',
-              function(uiLoad) {
+              function (uiLoad) {
                 return uiLoad.load(['js/app/helpSetting/shebao.js']);
               }
             ]
@@ -47,21 +48,73 @@ angular.module('app')
           templateUrl: 'tpl/helpSetting/gjj.html',
           resolve: {
             deps: ['uiLoad',
-              function(uiLoad) {
-                return uiLoad.load(['js/app/helpSetting/gjj.js']);
+              function (uiLoad) {
+                return uiLoad.load(['js/app/errorMgmt/gjj.js']);
+              }
+            ]
+          }
+        })
+
+        // 异常管理
+        .state('app.errorMgmt', {
+          url: '/errorMgmt',
+          template: '<div ui-view class="h-full"></div>'
+        })
+        .state('app.errorMgmt.shebao', {
+          url: '/shebao',
+          templateUrl: 'tpl/errorMgmt/shebao.html',
+          resolve: {
+            deps: ['uiLoad',
+              function (uiLoad) {
+                return uiLoad.load(['js/app/errorMgmt/shebao.js']);
+              }
+            ]
+          }
+        })
+        .state('app.errorMgmt.gjj', {
+          url: '/gjj',
+          templateUrl: 'tpl/errorMgmt/gjj.html',
+          resolve: {
+            deps: ['uiLoad',
+              function (uiLoad) {
+                return uiLoad.load(['js/app/errorMgmt/gjj.js']);
+              }
+            ]
+          }
+        })
+
+        // 统计
+        .state('app.reportMgmt', {
+          url: '/reportMgmt',
+          template: '<div ui-view class="h-full"></div>'
+        })
+        .state('app.reportMgmt.shebao', {
+          url: '/shebao',
+          templateUrl: 'tpl/reportMgmt/shebao.html',
+          resolve: {
+            deps: ['uiLoad',
+              function (uiLoad) {
+                return uiLoad.load(['js/app/reportMgmt/shebao.js']);
+              }
+            ]
+          }
+        })
+        .state('app.reportMgmt.gjj', {
+          url: '/gjj',
+          templateUrl: 'tpl/reportMgmt/gjj.html',
+          resolve: {
+            deps: ['uiLoad',
+              function (uiLoad) {
+                return uiLoad.load(['js/app/errorMgmt/gjj.js']);
               }
             ]
           }
         })
 
         // 个人中心
-        .state('app.page', {
-          url: '/page',
-          template: '<div ui-view></div>'
-        })
-        .state('app.page.profile', {
+        .state('app.profile', {
           url: '/profile',
-          templateUrl: 'tpl/profile/profile.html',
+          templateUrl: 'tpl/profile.html',
           resolve: {
             deps: ['$ocLazyLoad',
               function ($ocLazyLoad) {
@@ -74,7 +127,6 @@ angular.module('app')
             ]
           }
         });
-
 
       // Helper function to get parameters from the query string.
       function getUrlParam(paramName) {

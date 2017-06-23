@@ -6,8 +6,8 @@ angular.module('app')
     function ($scope, $rootScope, $localStorage, $http, $window, $state, authService, WebConst) {
       $scope.app = {
         name: '',
-        version: '',
-        copyright: '',
+        version: 'v0.1.0',
+        copyright: '杭州信牛网络科技有限公司',
         // for chart colors
         color: {
           primary: '#7266ba',
@@ -30,6 +30,15 @@ angular.module('app')
           asideDock: false,
           container: false
         }
+      };
+
+      // Hold dropdown on click
+      angular.element('body').on('click', '.dropdown-menu.hold-on-click', function(e) {
+        e.stopPropagation();
+      });
+
+      $scope.app.profile = {
+        avatarUrl: 'img/avatar_male.png'
       };
     }
   ]);
