@@ -1,6 +1,86 @@
-<div ng-init="app.hideFooter = false;">
-  <div class="bg-light lter b-b wrapper-md">
-    <h1 class="m-n font-thin h3">社保异常处理</h1>
-  </div>
+<div ng-init="app.hideFooter = false;" ng-controller="sbErrorMgmtCtrl as vm">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">社保异常处理</h1>
+    </div>
 
+    <div class="wrapper-md">
+        <form class="form-horizontal">
+            <div class="panel panel-criteria">
+                <div class="panel-header">
+                    <i class="fa fa-search"></i> 选择城市
+                </div>
+
+                <div class="panel-body">
+                    <div class="form-group m-b-none">
+                        <label class="col-md-1 col-lg-1 control-label text-right text-nowrap">省份：</label>
+                        <div class="col-md-2 col-lg-2 text-left">
+                            <select class="form-control m-b" ng-model="province"
+                                    ng-options="pro.name for pro in provinces">
+                                <option value="">-- 请选择省份 --</option>
+                            </select>
+                        </div>
+                        <label class="col-md-1 col-lg-1 control-label text-right text-nowrap">城市：</label>
+                        <div class="col-md-2 col-lg-2 text-left">
+                            <select class="form-control m-b"
+                                    ng-model="city" ng-options="c.name for c in province.cities">
+                                <option value="">-- 请选择城市 --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="wrapper-md bg-white">
+        <form class="form-horizontal m-t-xl" name="form" novalidate>
+            <div class="form-group">
+                <label class="col-md-2 control-label text-right text-nowrap">当前状态<span
+                        class="text-danger">*</span>：</label>
+                <div class="col-md-6 text-left">
+                    <select class="form-control" ng-model="settingJson.isActive">
+                        <option value="-1">请选择</option>
+                        <option value="1">正常</option>
+                        <option value="0">报错</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="settingJson.isActive==0">
+                <label class="col-md-2 control-label text-right text-nowrap">错误账户：</label>
+                <div class="col-md-6 text-left">
+                    <input type="text" class="form-control" placeholder="请输入错误账户"
+                           ng-model="settingJson.errorExample"/>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="settingJson.isActive==0">
+                <label class="col-md-2 control-label text-right text-nowrap">错误描述<span
+                        class="text-danger">*</span>：</label>
+                <div class="col-md-6 text-left">
+                    <input type="text" class="form-control" placeholder="请输入错误描述"
+                           ng-model="settingJson.errorDescription"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label text-right text-nowrap">社保官网：</label>
+                <div class="col-md-6 text-left">
+                    <input type="text" class="form-control" placeholder="请输入社保官网"
+                           ng-model="settingJson.websiteUrl"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label text-right text-nowrap">备注：</label>
+                <div class="col-md-6 text-left">
+                    <input type="text" class="form-control" placeholder="请输入备注" ng-model="settingJson.memo"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer bg-white">
+        <button class="btn btn-primary" ng-click="vm.save()"> 保存配置</button>
+    </div>
 </div>

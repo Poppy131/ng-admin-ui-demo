@@ -1,6 +1,96 @@
-<div ng-init="app.hideFooter = false;">
-  <div class="bg-light lter b-b wrapper-md">
-    <h1 class="m-n font-thin h3">社保帮助配置</h1>
-  </div>
+<div ng-init="app.hideFooter = false;" ng-controller="sbHelpSettingCtrl as vm">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">社保帮助配置</h1>
+    </div>
 
+    <div class="wrapper-md">
+        <form class="form-horizontal">
+            <div class="panel panel-criteria">
+                <div class="panel-header">
+                    <i class="fa fa-search"></i> 选择城市
+                </div>
+
+                <div class="panel-body">
+                    <div class="form-group m-b-none">
+                        <label class="col-md-1 col-lg-1 control-label text-right text-nowrap">省份：</label>
+                        <div class="col-md-2 col-lg-2 text-left">
+                            <select class="form-control m-b" ng-model="province"
+                                    ng-options="pro.name for pro in provinces">
+                                <option value="">-- 请选择省份 --</option>
+                            </select>
+                        </div>
+                        <label class="col-md-1 col-lg-1 control-label text-right text-nowrap">城市：</label>
+                        <div class="col-md-2 col-lg-2 text-left">
+                            <select class="form-control m-b"
+                                    ng-model="city" ng-options="c.location_all for c in province.gjjs">
+                                <option value="">-- 请选择城市 --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="wrapper-md bg-white">
+        <form class="form-horizontal m-t-lg" name="form" novalidate>
+            <h4 class="col-sm-offset-1">常见问题</h4>
+
+            <div class="form-group m-t-lg">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label class=""><input type="checkbox"
+                                           ng-model="helpJson.problems.fb_pwd"/>&nbsp;是否显示忘记密码</label><i></i>
+                    <div class="m-t-md" ng-show="helpJson.problems.fb_pwd">
+                        <label class="col-md-2 control-label text-right text-nowrap">连接地址：</label>
+                        <div class="col-md-6 text-left">
+                            <input type="text" class="form-control" placeholder="请输入连接地址"
+                                   ng-model="helpJson.problems.fb_pwd_location"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group m-t-md">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label><input type="checkbox" ng-model="helpJson.problems.call_help">&nbsp;是否显示客服</label></div>
+            </div>
+
+            <h4 class="m-t-lg col-sm-offset-1">如何获取账号等提示</h4>
+
+            <div class="form-group m-t-lg">
+                <label class="col-md-2 control-label text-right text-nowrap">标题：</label>
+                <div class="col-md-6 text-left">
+                    <input type="text" class="form-control" placeholder="请输入标题"
+                           ng-model="helpJson.tips.title"/>
+                </div>
+            </div>
+
+            <div class="form-group" ng-repeat="tip in helpJson.tips.content">
+                <label class="col-md-2 control-label text-right text-nowrap">提示{{tip.index+1}}：</label>
+                <div class="col-md-6 text-left">
+                    <button class="btn btn-danger label-after-buton" ng-click="vm.deleteTip(tip.index)">删除</button>
+                    <input type="text" class="form-control label-after-input" placeholder="请输入提示"
+                           ng-model="tip.txt"/>
+                </div>
+                <div class="w-full scroll-x scroll-y" ng-show="tip.location!=null">
+                    <label class="col-md-2 control-label text-right text-nowrap">地址：</label>
+                    <div class="col-md-6 text-left">
+                        <input type="text" class="form-control" placeholder="请输入地址"
+                               ng-model="tip.location"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="fr">
+                    <button class="btn btn-default" ng-click="vm.addTxtTip()"> <span class="glyphicon glyphicon-plus"></span> 添加纯文本提示</button>
+                    <button class="btn btn-default" ng-click="vm.addHrefTip()"> <span class="glyphicon glyphicon-plus"></span> 添加连接</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer bg-white">
+        <button class="btn btn-primary" ng-click="vm.save()"> 保存配置</button>
+    </div>
 </div>

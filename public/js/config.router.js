@@ -11,13 +11,15 @@ angular.module('app')
       $rootScope.authService = authService;
     }
   ])
-  .config(['$stateProvider', '$urlRouterProvider', 'JQ_CONFIG',
-    function ($stateProvider, $urlRouterProvider, JQ_CONFIG) {
-      //var popup = getUrlParam('popup'), isDefaultSet = false;
-      //if (!isDefaultSet) {
-      //  // Set the default page
-      //  $urlRouterProvider.otherwise('/app/page/profile');
-      //}
+  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+    function ($stateProvider, $urlRouterProvider, $locationProvider) {
+      var popup = getUrlParam('popup'), isDefaultSet = false;
+      if (!isDefaultSet) {
+        // Set the default page
+        $urlRouterProvider.otherwise('/app/profile');
+      }
+
+      $locationProvider.html5Mode(true);
 
       // Configure states
       $stateProvider
@@ -49,7 +51,7 @@ angular.module('app')
           resolve: {
             deps: ['uiLoad',
               function (uiLoad) {
-                return uiLoad.load(['js/app/errorMgmt/gjj.js']);
+                return uiLoad.load(['js/app/helpSetting/gjj.js']);
               }
             ]
           }

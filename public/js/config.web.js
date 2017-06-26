@@ -3,7 +3,7 @@
 angular.module('app')
     .constant('WebConst', {
         // API接口的基地址
-        WEB_URL: 'http://localhost:8080/admin',
+        WEB_URL: 'http://localhost:8082',
         // 登录/注销，etc
         URI_LOGIN: '/login',
         URI_LOGOUT: '/logout',
