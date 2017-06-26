@@ -1,4 +1,4 @@
-app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', function ($scope, $http, WebConst, BlockUI) {
+app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', 'MsgUtil', function ($scope, $http, WebConst, BlockUI, MsgUtil) {
     vm = this, $ = angular.element;
 
     var WEB_URL = WebConst.WEB_URL;
@@ -28,15 +28,18 @@ app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', fun
 
     function _save() {
         if (!$scope.city || !$scope.city.code) {
-            alert("请选择城市！");
+            //alert("请选择城市！");
+            MsgUtil.toastWarn('请选择城市！');
             return;
         }
         if ($scope.settingJson.isActive != 1 && $scope.settingJson.isActive != 0) {
-            alert("请选择状态");
+            //alert("请选择状态");
+            MsgUtil.toastWarn('请选择状态！');
             return;
         }
         if ($scope.settingJson.isActive == 0 && !$scope.settingJson.errorDescription) {
-            alert("请输入错误原因");
+            //alert("请输入错误原因");
+            MsgUtil.toastWarn('请输入错误原因！');
             return;
         }
         var url = WEB_URL + "/city/save/" + $scope.city.code;
