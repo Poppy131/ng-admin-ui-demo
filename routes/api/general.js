@@ -2332,6 +2332,24 @@ router.post('/city/tree', function (req, res) {
     });
 });
 
+router.post('/city/view/:code', function (req, res) {
+    res.json({
+        success: true,
+        data: {
+            "code": "anqing",
+            "errorDescription": "测试",
+            "errorExample": "{\"name\":\"XXX\",\"idCard\":\"XXXXXXXXXXXXXXXXX\",\"password\":\"xxxxxxxx\"}",
+            "isActive": 0,
+            "memo": "test",
+            "modifierName": "test",
+            "name": "安庆",
+            "pName": "安徽",
+            "updateTime": 1498482044000,
+            "websiteUrl": "http://220.179.13.107/webeps/logon/logon.jsp"
+        }
+    });
+});
+
 router.post('/city/filter', function (req, res) {
     res.json({
         success: true,
