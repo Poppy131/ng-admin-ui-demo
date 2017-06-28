@@ -98,7 +98,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         }
 
         var modalInstance = $modal.open({
-            templateUrl: 'tpl/reportMgmt/popup_edit_sb_error.html',
+            templateUrl: 'tpl/shebaoMgmt/popup_edit_sb_error.html',
             controller: 'sbCityErrorEditController as vm',
             size: 'lg',
             backdrop: 'static',
