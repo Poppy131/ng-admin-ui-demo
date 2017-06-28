@@ -1,9 +1,9 @@
-app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', 'MsgUtil', function ($scope, $http, WebConst, BlockUI, MsgUtil) {
+app.controller('gjjErrorMgmtCtrl', ['$http', 'WebConst', '$scope', 'MsgUtil', 'BlockUI', function ($http, WebConst, $scope, MsgUtil, BlockUI) {
     vm = this, $ = angular.element;
 
     var WEB_URL = WebConst.WEB_URL;
 
-    vm.save = _save;
+    vm. save = _save;
 
     _init();
 
@@ -22,40 +22,12 @@ app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', 'Ms
             modifierName: "",
             updateTime: ""
         };
+        BlockUI.mask({animate: true});
         _getCitiesTree();
     }
 
-
-    function _save() {
-        if (!$scope.city || !$scope.city.code) {
-            //alert("请选择城市！");
-            MsgUtil.toastWarn('请选择城市！');
-            return;
-        }
-        if ($scope.settingJson.isActive != 1 && $scope.settingJson.isActive != 0) {
-            //alert("请选择状态");
-            MsgUtil.toastWarn('请选择状态！');
-            return;
-        }
-        if ($scope.settingJson.isActive == 0 && !$scope.settingJson.errorDescription) {
-            //alert("请输入错误原因");
-            MsgUtil.toastWarn('请输入错误原因！');
-            return;
-        }
-        var url = WEB_URL + "/city/save/" + $scope.city.code;
-        BlockUI.mask({ animate: true });
-        $http.post(url, $scope.settingJson).success(function (json) {
-            BlockUI.unmask();
-            if (json && json.success && json.data) {
-                var data = json.data;
-                alert(data);
-            }
-        });
-    }
-
     function _getCitiesTree() {
-        var url = WEB_URL + "/city/tree";
-        BlockUI.mask({ animate: true });
+        var url = WEB_URL + "/gjj/city/tree";
         $http.post(url).success(function (json) {
             BlockUI.unmask();
             if (json && json.success && json.data) {
@@ -65,11 +37,31 @@ app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', 'Ms
         });
     }
 
-    function _getCityDetail(code) {
-        var url = WEB_URL + "/city/view/" + code;
-        BlockUI.mask({ animate: true });
-        $http.post(url).success(function (json) {
-            BlockUI.unmask();
+    function _save() {
+        if (!$scope.city || !$scope.city.cid) {
+            MsgUtil.toastWarn("请选择城市！");
+            return;
+        }
+        if ($scope.settingJson.isActive != 1 && $scope.settingJson.isActive != 0) {
+            MsgUtil.toastWarn("请选择状态");
+            return;
+        }
+        if ($scope.settingJson.isActive == 0 && !$scope.settingJson.errorDescription) {
+            MsgUtil.toastWarn("请输入错误原因");
+            return;
+        }
+        var url = WEB_URL + "/gjj/city/save/" + $scope.city.cid;
+        $http.post(url, $scope.settingJson).success(function (json) {
+            if (json && json.success && json.data) {
+                var data = json.data;
+                MsgUtil.toastSuccess(data);
+            }
+        });
+    }
+
+    function _getCityDetail(cid) {
+        var url = WEB_URL + "/gjj/city/view/" + cid;
+        $http.post(url, {"cid": cid}).success(function (json) {
             if (json && json.success && json.data) {
                 var data = json.data;
                 $scope.settingJson = {
@@ -117,7 +109,7 @@ app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', 'Ms
     $scope.$watch(function () {
         return $scope.city;
     }, function () {
-        if (!$scope.city || !$scope.city.code) {
+        if (!$scope.city || !$scope.city.cid) {
             $scope.settingJson = {
                 isActive: -1,
                 errorDescription: "",
@@ -131,7 +123,7 @@ app.controller('sbErrorMgmtCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', 'Ms
             };
             return;
         }
-        _getCityDetail($scope.city.code);
+        _getCityDetail($scope.city.cid);
     });
 
     $scope.$watch(function () {

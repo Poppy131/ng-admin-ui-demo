@@ -1,4 +1,4 @@
-app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', function ($scope, $http, WebConst, BlockUI) {
+app.controller('gjjHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', 'MsgUtil', function ($scope, $http, WebConst, BlockUI, MsgUtil) {
     vm = this, $ = angular.element;
 
     var WEB_URL = WebConst.WEB_URL;
@@ -15,8 +15,7 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
                 content: []
             },
             problems: {
-                fb_pwd: false,
-                call_help: false
+                fb_pwd: false
             }
         };
         vm.addTxtTip = _addTxtTip;
@@ -34,12 +33,12 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
     }
 
     function _save() {
-        if (!$scope.city || !$scope.city.code) {
-            alert("请先选择城市");
+        if (!$scope.city || !$scope.city.cid) {
+            MsgUtil.toastWarn("请先选择城市");
             return;
         }
         if ($scope.helpJson.problems.fb_pwd && !$scope.helpJson.problems.fb_pwd_location) {
-            alert("忘记密码链接不能为空");
+            MsgUtil.toastWarn("忘记密码链接不能为空");
             return;
         }
         var json = {
@@ -48,15 +47,9 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
                 content: []
             },
             problems: {
-                fb_pwd: "0",
-                call_help: "0"
+                fb_pwd: "0"
             }
         };
-        if ($scope.helpJson.problems.call_help) {
-            json.problems.call_help = "1";
-        } else {
-            json.problems.call_help = "0";
-        }
 
         if ($scope.helpJson.problems.fb_pwd) {
             json.problems.fb_pwd = "1";
@@ -70,22 +63,22 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
         }
 
         if (!$scope.helpJson.tips.title) {
-            alert("请输入标题");
+            MsgUtil.toastWarn("请输入标题");
             return;
         }
         json.tips.title = $scope.helpJson.tips.title;
         if ($scope.helpJson.tips.content.length < 1) {
-            alert("请输入至少一条提示");
+            MsgUtil.toastWarn("请输入至少一条提示");
             return;
         }
         for (var i = 0; i < $scope.helpJson.tips.content.length; i++) {
             var tip = $scope.helpJson.tips.content[i];
             if (!tip.txt) {
-                alert("提示" + (i + 1) + "内容不能为空");
+                MsgUtil.toastWarn("提示" + (i + 1) + "内容不能为空");
                 return;
             }
             if (tip.location == "") {
-                alert("提示" + (i + 1) + "链接不能为空");
+                MsgUtil.toastWarn("提示" + (i + 1) + "链接不能为空");
                 return;
             }
         }
@@ -108,21 +101,21 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
     function _savHelpJson(json) {
         var helpStr = JSON.stringify(json);
         var params = {
-            cityCode: $scope.city.code,
+            cityCode: $scope.city.cid,
             helpJson: helpStr
         };
-        var url = WEB_URL + "/help/save/shebao";
+        var url = WEB_URL + "/help/save/gjj";
         $http.post(url, params).success(function (response) {
             if (response && response.success && response.data) {
-                alert("保存成功");
-                _getCityDetail($scope.city.code);
+                MsgUtil.toastSuccess("保存成功");
+                _getCityDetail($scope.city.cid);
             }
         });
     }
 
     function _addHrefTip() {
-        if (!$scope.city || !$scope.city.code) {
-            alert("请先选择城市");
+        if (!$scope.city || !$scope.city.cid) {
+            MsgUtil.toastWarn("请先选择城市");
             return;
         }
         var tip = {
@@ -134,8 +127,8 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
     }
 
     function _addTxtTip() {
-        if (!$scope.city || !$scope.city.code) {
-            alert("请先选择城市");
+        if (!$scope.city || !$scope.city.cid) {
+            MsgUtil.toastWarn("请先选择城市");
             return;
         }
         var tip = {
@@ -146,7 +139,7 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
     }
 
     function _getCitiesTree() {
-        var url = WEB_URL + "/city/tree";
+        var url = WEB_URL + "/gjj/city/tree";
         $http.post(url).success(function (json) {
             if (json && json.success && json.data) {
                 var data = json.data;
@@ -156,7 +149,7 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
     }
 
     function _getCityDetail(code) {
-        var url = WEB_URL + "/help/view/shebao";
+        var url = WEB_URL + "/help/view/gjj";
         $http.post(url, {"cityCode": code}).success(function (json) {
             if (json && json.success && json.data) {
                 var dataJson = JSON.parse(json.data);
@@ -168,8 +161,7 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
                         content: []
                     },
                     problems: {
-                        fb_pwd: false,
-                        call_help: false
+                        fb_pwd: false
                     }
                 };
             }
@@ -186,11 +178,6 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
                 $scope.helpJson.problems.fb_pwd_location = json.problems.fb_pwd_location;
             } else {
                 $scope.helpJson.problems.fb_pwd = false;
-            }
-            if (json.problems.call_help == "1") {
-                $scope.helpJson.problems.call_help = true;
-            } else {
-                $scope.helpJson.problems.call_help = false;
             }
         }
         if (!json.tips) {
@@ -210,20 +197,19 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
     $scope.$watch(function () {
         return $scope.city;
     }, function () {
-        if (!$scope.city || !$scope.city.code) {
+        if (!$scope.city || !$scope.city.cid) {
             $scope.helpJson = {
                 tips: {
                     title: "",
                     content: []
                 },
                 problems: {
-                    fb_pwd: false,
-                    call_help: false
+                    fb_pwd: false
                 }
             };
             return;
         }
-        _getCityDetail($scope.city.code);
+        _getCityDetail($scope.city.cid);
     });
 
     $scope.$watch(function () {
@@ -236,10 +222,10 @@ app.controller('sbHelpSettingCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', f
                 content: []
             },
             problems: {
-                fb_pwd: false,
-                call_help: false
+                fb_pwd: false
             }
         };
     });
+
 
 }]);

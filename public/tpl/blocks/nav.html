@@ -3,55 +3,7 @@
   <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
     <span>导航</span>
   </li>
-  <!-- 帮助配置 -->
-  <li ng-class="{active:$state.includes('app.helpSetting')}"
-      check-permissions="helpSetting:view">
-    <a href class="auto">
-      <span class="pull-right text-muted">
-        <i class="fa fa-fw fa-angle-right text"></i>
-        <i class="fa fa-fw fa-angle-down text-active"></i>
-      </span>
-      <i class="fa fa-cogs"></i>
-      <span class="font-bold">帮助配置</span>
-    </a>
-    <ul class="nav nav-sub dk">
-      <li ui-sref-active="active">
-        <a ui-sref="app.helpSetting.shebao">
-          <span>社保</span>
-        </a>
-      </li>
-      <li ui-sref-active="active">
-        <a ui-sref="app.helpSetting.gjj">
-          <span>公积金</span>
-        </a>
-      </li>
-    </ul>
-  </li>
-  <!-- 异常处理 -->
-  <li ng-class="{active:$state.includes('app.errorMgmt')}"
-      check-permissions="errorMgmt:view">
-    <a href class="auto">
-      <span class="pull-right text-muted">
-        <i class="fa fa-fw fa-angle-right text"></i>
-        <i class="fa fa-fw fa-angle-down text-active"></i>
-      </span>
-      <i class="fa fa-user-times"></i>
-      <span class="font-bold">异常管理</span>
-    </a>
-    <ul class="nav nav-sub dk">
-      <li ui-sref-active="active">
-        <a ui-sref="app.errorMgmt.shebao">
-          <span>社保</span>
-        </a>
-      </li>
-      <li ui-sref-active="active">
-        <a ui-sref="app.errorMgmt.gjj">
-          <span>公积金</span>
-        </a>
-      </li>
-    </ul>
-  </li>
-  <!-- 统计 -->
+  <!-- 社保 -->
   <li ng-class="{active:$state.includes('app.shebaoMgmt')}"
       check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
     <a href class="auto">
@@ -69,14 +21,36 @@
           <span>社保列表</span>
         </a>
       </li>
-      <!--<li ui-sref-active="active"-->
-      <!--check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">-->
-      <!--<a ui-sref="app.reportMgmt.gjj">-->
-      <!--<span>公积金</span>-->
-      <!--</a>-->
-      <!--</li>-->
     </ul>
   </li>
+
+  <!-- 公积金 -->
+  <li ng-class="{active:$state.includes('app.gjjMgmt')}"
+      check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="fa fa-bar-chart-o"></i>
+      <span class="font-bold">公积金管理</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active"
+          check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+        <a ui-sref="app.gjjMgmt.helpSetting">
+          <span>公积金帮助配置</span>
+        </a>
+      </li>
+      <li ui-sref-active="active"
+          check-permissions="any('coupon:view', 'coupon_audit:view', 'coupon_distributing:view')">
+        <a ui-sref="app.gjjMgmt.errorMgmt">
+          <span>公积金异常处理</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+
   <!--个人中心-->
   <li ui-sref-active="active">
     <a ui-sref="app.profile">
