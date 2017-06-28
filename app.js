@@ -7,6 +7,6 @@ app.use(express.static('public'));
 
 // routes
 app.use('/', require('./routes/index'));
-//require('./routes/api/')(app);
+require('./routes/api/')(app);
 
 module.exports = app;

@@ -11,8 +11,8 @@ angular.module('app')
       $rootScope.authService = authService;
     }
   ])
-  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
-    function ($stateProvider, $urlRouterProvider, $locationProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'JQ_CONFIG',
+    function ($stateProvider, $urlRouterProvider, $locationProvider, JQ_CONFIG) {
       var popup = getUrlParam('popup'), isDefaultSet = false;
       if (!isDefaultSet) {
         // Set the default page
@@ -94,9 +94,12 @@ angular.module('app')
           url: '/shebao',
           templateUrl: 'tpl/reportMgmt/shebao.html',
           resolve: {
-            deps: ['uiLoad',
-              function (uiLoad) {
-                return uiLoad.load(['js/app/reportMgmt/shebao.js']);
+            deps: ['$ocLazyLoad',
+              function( $ocLazyLoad ){
+                return $ocLazyLoad.load(['smart-table','ui.select']).then(
+                    function(){
+                      return $ocLazyLoad.load(['/js/app/reportMgmt/shebao.js']);
+                    });
               }
             ]
           }

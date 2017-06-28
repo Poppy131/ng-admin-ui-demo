@@ -40,5 +40,8 @@ angular.module('app')
       $scope.app.profile = {
         avatarUrl: 'img/avatar_male.png'
       };
+
+      $.jgrid.defaults.styleUI = 'Bootstrap';
+
     }
   ]);
