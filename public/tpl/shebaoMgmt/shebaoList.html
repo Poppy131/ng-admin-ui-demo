@@ -27,18 +27,18 @@
                             </select>
                         </div>
 
-                        <label class="col-md-1 col-lg-1 control-label text-right text-nowrap">城市名：</label>
-                        <div class="col-md-2 col-lg-2 text-left">
-                            <input type="text" class="form-control m-b" ng-model="vm.searchOpts.buyerLogin" placeholder="请输入城市名或拼音"/>
-                        </div>
-
                         <label class="col-md-1 col-lg-1 control-label text-right text-nowrap">城市状态：</label>
                         <div class="col-md-2 col-lg-2 text-left">
-                            <select class="form-control m-b">
-                                <option value="">-- 全部 --</option>
-                                <option value=""> 正常 </option>
-                                <option value=""> 报错 </option>
+                            <select class="form-control m-b" ng-model="vm.isActive">
+                                <option value="-1">-- 全部 --</option>
+                                <option value="1"> 正常 </option>
+                                <option value="0"> 报错 </option>
                             </select>
+                        </div>
+
+                        <label class="col-md-1 col-lg-1 control-label text-right text-nowrap">城市名：</label>
+                        <div class="col-md-2 col-lg-2 text-left">
+                            <input type="text" class="form-control m-b" ng-model="vm.searchOpts.txt" placeholder="请输入城市名或拼音"/>
                         </div>
                     </div>
                 </div>

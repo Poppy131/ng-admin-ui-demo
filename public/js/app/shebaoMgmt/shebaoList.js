@@ -1,11 +1,12 @@
-app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$compile', '$modal', function ($scope, $http, WebConst, BlockUI, $compile, $modal) {
+app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$compile', '$modal', 'MsgUtil', function ($scope, $http, WebConst, BlockUI, $compile, $modal, MsgUtil) {
     vm = this, $ = angular.element;
 
     var WEB_URL = WebConst.WEB_URL;
 
     vm.searchOpts = {
         pageSize: WebConst.defaultQueryPageSize,
-        maxSize: 5
+        maxSize: 5,
+        txt: ""
     };
 
     vm.pageResult = [];
@@ -15,12 +16,15 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
     vm.editSbCityErrorTemplate = _editSbCityErrorTemplate;
     vm.editSbCityHelpTemplate = _editSbCityHelpTemplate;
 
+    vm.refreshGrid = _refreshGrid;
+
     _init();
 
     function _init() {
         vm.provinces = [];
         vm.province = {};
         vm.city = {};
+        vm.isActive = -1;
         _getCitiesTree();
         vm.jqGridConfig = {
             datatype: 'local',
@@ -41,7 +45,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             height: 'auto',
             gridComplete: _onGridComplete
         };
-        refreshGrid();
+        _refreshGrid();
     }
 
     function _statusFormatter(cellvalue) {
@@ -68,16 +72,40 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             });
     }
 
-    function refreshGrid() {
+    function _refreshGrid() {
+        if (vm.province && vm.province.name) {
+            vm.searchOpts.province = vm.province.name;
+        }
+        if (vm.city && vm.city.code) {
+            vm.searchOpts.code = vm.city.code;
+        }
+        if (vm.isActive == 1 || vm.isActive == 0) {
+            vm.searchOpts.isActive = vm.isActive;
+        }
+        vm.searchOpts.pageNumber = vm.pageNumber;
+        if (!vm.searchOpts.pageNumber) {
+            vm.searchOpts.pageNumber = 1;
+        }
         var url = WEB_URL + "/city/filter";
         BlockUI.mask({animate: true});
-        $http.post(url).success(function (json) {
+        $http.post(url, vm.searchOpts).success(function (json) {
             BlockUI.unmask();
             if (json && json.success && json.data) {
                 var data = json.data;
                 vm.pageResult = data;
                 vm.sbCities = data.pageData;
                 vm.grid.reload(vm.sbCities);
+            } else {
+                vm.pageResult = {
+                    pageNumber: 1,
+                    pageSize: 20,
+                    totalCount: 0,
+                    totalPages: 1,
+                    pageData: []
+                };
+                vm.sbCities = vm.pageResult.pageData;
+                vm.grid.reload(vm.sbCities);
+                MsgUtil.toastInfo("无符合搜索条件结果");
             }
         });
     }
@@ -112,7 +140,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         });
         modalInstance.result.then(function (status) {
             if (status == 1) {
-                refreshGrid();
+                _refreshGrid();
             }
         });
     }
@@ -138,7 +166,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         });
         modalInstance.result.then(function (status) {
             if (status == 1) {
-                refreshGrid();
+                _refreshGrid();
             }
         });
     }
