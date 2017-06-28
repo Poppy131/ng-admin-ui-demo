@@ -2332,6 +2332,13 @@ router.post('/city/tree', function (req, res) {
     });
 });
 
+router.post('/city/save/:code', function (req, res) {
+    res.json({
+        success: true,
+        data:  "保存成功"
+    });
+});
+
 router.post('/city/view/:code', function (req, res) {
     res.json({
         success: true,

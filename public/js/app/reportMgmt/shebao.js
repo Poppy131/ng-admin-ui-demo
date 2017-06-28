@@ -101,44 +101,49 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             templateUrl: 'tpl/reportMgmt/popup_edit_sb_error.html',
             controller: 'sbCityErrorEditController as vm',
             size: 'lg',
-            backdrop: 'true',
+            backdrop: 'static',
             keyboard: false,
+            windowClass: 'shebaoList-popup',
             resolve: {
-                code: function () {
+                cityCode: function () {
                     return angular.copy(code);
                 }
             }
         });
-        modalInstance.result.then(function (code) {
-            console.log(code);
+        modalInstance.result.then(function (status) {
+            if(status == 1){
+                refreshGrid();
+            }
         });
     }
 
 }]);
 
-app.controller('sbCityErrorEditController', ['$scope', '$compile', '$sce', '$http', '$timeout', '$modalInstance', '$modal', 'code', 'MsgUtil', 'WebConst', 'BlockUI',
-    function ($scope, $compile, $sce, $http, $timeout, $modalInstance, $modal, code, MsgUtil, WebConst, BlockUI) {
+app.controller('sbCityErrorEditController', ['$compile', '$sce', '$http', '$timeout', '$modalInstance', '$modal', 'cityCode', 'MsgUtil', 'WebConst', 'BlockUI',
+    function ($compile, $sce, $http, $timeout, $modalInstance, $modal, cityCode, MsgUtil, WebConst, BlockUI) {
         var WEB_URL = WebConst.WEB_URL;
         var vm = this, $ = angular.element;
 
-        // vm.ok = ok;
+        vm.cityCode = cityCode;
+
+        vm.ok = ok;
         vm.cancel = cancel;
 
         _init();
 
         function _init() {
-            $scope.settingJson = {
+            vm.settingJson = {
                 isActive: -1,
                 errorDescription: "",
                 errorExample: "",
                 websiteUrl: "",
                 memo: ""
             };
-            $scope.modifierInfoJson = {
+            vm.modifierInfoJson = {
                 modifierName: "",
                 updateTime: ""
             };
-            _getCityDetail(code);
+            _getCityDetail(vm.cityCode);
         }
 
         function _getCityDetail(code) {
@@ -148,44 +153,67 @@ app.controller('sbCityErrorEditController', ['$scope', '$compile', '$sce', '$htt
                 BlockUI.unmask();
                 if (json && json.success && json.data) {
                     var data = json.data;
-                    $scope.settingJson = {
+                    vm.settingJson = {
                         isActive: data.isActive,
                         errorDescription: data.errorDescription,
                         errorExample: data.errorExample,
                         websiteUrl: data.websiteUrl,
                         memo: data.memo
                     };
-                    $scope.modifierInfoJson = {
+                    vm.modifierInfoJson = {
                         modifierName: data.modifierName,
                         updateTime: data.updateTime
                     };
-                    if ($scope.settingJson.isActive != 0 && $scope.settingJson.isActive != 1) {
-                        $scope.settingJson.isActive = -1;
+                    if (vm.settingJson.isActive != 0 && vm.settingJson.isActive != 1) {
+                        vm.settingJson.isActive = -1;
                     }
-                    if (!$scope.settingJson.errorDescription) {
-                        $scope.settingJson.errorDescription = "";
+                    if (!vm.settingJson.errorDescription) {
+                        vm.settingJson.errorDescription = "";
                     }
-                    if (!$scope.settingJson.errorExample) {
-                        $scope.settingJson.errorExample = "";
+                    if (!vm.settingJson.errorExample) {
+                        vm.settingJson.errorExample = "";
                     }
-                    if (!$scope.settingJson.websiteUrl) {
-                        $scope.settingJson.websiteUrl = "";
+                    if (!vm.settingJson.websiteUrl) {
+                        vm.settingJson.websiteUrl = "";
                     }
-                    if (!$scope.settingJson.memo) {
-                        $scope.settingJson.memo = "";
+                    if (!vm.settingJson.memo) {
+                        vm.settingJson.memo = "";
                     }
                 } else {
-                    $scope.settingJson = {
+                    vm.settingJson = {
                         isActive: -1,
                         errorDescription: "",
                         errorExample: "",
                         websiteUrl: "",
                         memo: ""
                     };
-                    $scope.modifierInfoJson = {
+                    vm.modifierInfoJson = {
                         modifierName: "",
                         updateTime: ""
                     };
+                }
+            });
+        }
+
+        function ok() {
+            if (vm.settingJson.isActive != 1 && vm.settingJson.isActive != 0) {
+                MsgUtil.toastWarn('请选择状态！');
+                return;
+            }
+            if (vm.settingJson.isActive == 0 && !vm.settingJson.errorDescription) {
+                MsgUtil.toastWarn('请输入错误原因！');
+                return;
+            }
+            var url = WEB_URL + "/city/save/" + vm.cityCode;
+            BlockUI.mask({ animate: true });
+            $http.post(url, vm.settingJson).success(function (json) {
+                BlockUI.unmask();
+                if (json && json.success && json.data) {
+                    var data = json.data;
+                    MsgUtil.toastSuccess(data);
+                    $modalInstance.close(1);
+                } else {
+                    MsgUtil.alert("保存失败！")
                 }
             });
         }

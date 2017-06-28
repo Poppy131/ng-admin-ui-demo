@@ -1,4 +1,56 @@
 <div class="bg-light lter b-b wrapper-md">
     <button type="button" class="close" ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h1 class="m-n font-thin h3">编辑</h1>
+    <h1 class="m-n font-thin h3">社保异常编辑</h1>
+</div>
+
+<div class="wrapper-md">
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="col-md-2 control-label text-right text-nowrap">当前状态<span
+                    class="text-danger">*</span>：</label>
+            <div class="col-md-6 text-left">
+                <select class="form-control" ng-model="vm.settingJson.isActive">
+                    <option value="-1">请选择</option>
+                    <option value="1">正常</option>
+                    <option value="0">报错</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.settingJson.isActive==0">
+            <label class="col-md-2 control-label text-right text-nowrap">错误账户：</label>
+            <div class="col-md-6 text-left">
+                <input type="text" class="form-control" placeholder="请输入错误账户"
+                       ng-model="vm.settingJson.errorExample"/>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.settingJson.isActive==0">
+            <label class="col-md-2 control-label text-right text-nowrap">错误描述<span
+                    class="text-danger">*</span>：</label>
+            <div class="col-md-6 text-left">
+                <input type="text" class="form-control" placeholder="请输入错误描述"
+                       ng-model="vm.settingJson.errorDescription"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label text-right text-nowrap">社保官网：</label>
+            <div class="col-md-6 text-left">
+                <input type="text" class="form-control" placeholder="请输入社保官网"
+                       ng-model="vm.settingJson.websiteUrl"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label text-right text-nowrap">备注：</label>
+            <div class="col-md-6 text-left">
+                <input type="text" class="form-control" placeholder="请输入备注" ng-model="vm.settingJson.memo"/>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer bg-white">
+    <button class="btn btn-default" ng-click="vm.cancel()"> 取消</button>
+    <button class="btn btn-primary" ng-click="vm.ok()"> 确定</button>
 </div>
