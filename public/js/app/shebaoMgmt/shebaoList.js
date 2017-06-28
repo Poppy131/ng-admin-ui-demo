@@ -13,6 +13,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
     vm.grid = {};
 
     vm.editSbCityErrorTemplate = _editSbCityErrorTemplate;
+    vm.editSbCityHelpTemplate = _editSbCityHelpTemplate;
 
     _init();
 
@@ -91,6 +92,31 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         });
     }
 
+    function _editSbCityHelpTemplate(code) {
+        if (!code) {
+            console.log('code不存在');
+            return;
+        }
+        var modalInstance = $modal.open({
+            templateUrl: 'tpl/shebaoMgmt/popup_edit_sb_help.html',
+            controller: 'sbCityHelpEditController as vm',
+            size: 'lg',
+            backdrop: 'static',
+            keyboard: false,
+            windowClass: 'shebaoList-popup',
+            resolve: {
+                cityCode: function () {
+                    return angular.copy(code);
+                }
+            }
+        });
+        modalInstance.result.then(function (status) {
+            if (status == 1) {
+                refreshGrid();
+            }
+        });
+    }
+
     function _editSbCityErrorTemplate(code) {
         if (!code) {
             console.log('code不存在');
@@ -111,7 +137,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             }
         });
         modalInstance.result.then(function (status) {
-            if(status == 1){
+            if (status == 1) {
                 refreshGrid();
             }
         });
@@ -119,6 +145,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
 
 }]);
 
+//社保异常配置
 app.controller('sbCityErrorEditController', ['$compile', '$sce', '$http', '$timeout', '$modalInstance', '$modal', 'cityCode', 'MsgUtil', 'WebConst', 'BlockUI',
     function ($compile, $sce, $http, $timeout, $modalInstance, $modal, cityCode, MsgUtil, WebConst, BlockUI) {
         var WEB_URL = WebConst.WEB_URL;
@@ -205,9 +232,214 @@ app.controller('sbCityErrorEditController', ['$compile', '$sce', '$http', '$time
                 return;
             }
             var url = WEB_URL + "/city/save/" + vm.cityCode;
-            BlockUI.mask({ animate: true });
+            BlockUI.mask({animate: true});
             $http.post(url, vm.settingJson).success(function (json) {
                 BlockUI.unmask();
+                if (json && json.success && json.data) {
+                    var data = json.data;
+                    MsgUtil.toastSuccess(data);
+                    $modalInstance.close(1);
+                } else {
+                    MsgUtil.alert("保存失败！")
+                }
+            });
+        }
+
+        function cancel() {
+            if (!MsgUtil.confirm("确定要放弃本次编辑吗？")) {
+                return;
+            }
+            $modalInstance.dismiss('cancel');
+        }
+
+    }
+]);
+
+//社保帮助配置
+app.controller('sbCityHelpEditController', ['$compile', '$sce', '$http', '$timeout', '$modalInstance', '$modal', 'cityCode', 'MsgUtil', 'WebConst', 'BlockUI',
+    function ($compile, $sce, $http, $timeout, $modalInstance, $modal, cityCode, MsgUtil, WebConst, BlockUI) {
+        var WEB_URL = WebConst.WEB_URL;
+        var vm = this, $ = angular.element;
+
+        vm.cityCode = cityCode;
+
+        vm.ok = ok;
+        vm.cancel = cancel;
+
+        vm.addTxtTip = _addTxtTip;
+        vm.addHrefTip = _addHrefTip;
+        vm.deleteTip = _deleteTip;
+
+        _init();
+
+        function _init() {
+            vm.helpJson = {
+                tips: {
+                    title: "",
+                    content: []
+                },
+                problems: {
+                    fb_pwd: false,
+                    call_help: false
+                }
+            };
+            _getCityDetail(vm.cityCode);
+        }
+
+        function _getCityDetail(code) {
+            var url = WEB_URL + "/help/view/shebao";
+            BlockUI.mask({animate: true});
+            $http.post(url, {"cityCode": code}).success(function (json) {
+                BlockUI.unmask();
+                if (json && json.success && json.data) {
+                    var dataJson = JSON.parse(json.data);
+                    _initHelpJson(dataJson);
+                } else {
+                    vm.helpJson = {
+                        tips: {
+                            title: "",
+                            content: []
+                        },
+                        problems: {
+                            fb_pwd: false,
+                            call_help: false
+                        }
+                    };
+                }
+            });
+        }
+
+        function _initHelpJson(json) {
+            if (!json) {
+                return;
+            }
+            if (json.problems) {
+                if (json.problems.fb_pwd == "1") {
+                    vm.helpJson.problems.fb_pwd = true;
+                    vm.helpJson.problems.fb_pwd_location = json.problems.fb_pwd_location;
+                } else {
+                    vm.helpJson.problems.fb_pwd = false;
+                }
+                if (json.problems.call_help == "1") {
+                    vm.helpJson.problems.call_help = true;
+                } else {
+                    vm.helpJson.problems.call_help = false;
+                }
+            }
+            if (!json.tips) {
+                return;
+            }
+            if (json.tips.title) {
+                vm.helpJson.tips.title = json.tips.title;
+            }
+            if (json.tips.content) {
+                vm.helpJson.tips.content = json.tips.content;
+                vm.helpJson.tips.content.forEach(function (tip, i) {
+                    tip.index = i;
+                });
+            }
+        }
+
+        function _addHrefTip() {
+            var tip = {
+                txt: "",
+                location: "",
+                index: vm.helpJson.tips.content.length
+            };
+            vm.helpJson.tips.content.push(tip);
+        }
+
+        function _addTxtTip() {
+            var tip = {
+                txt: "",
+                index: vm.helpJson.tips.content.length
+            };
+            vm.helpJson.tips.content.push(tip);
+        }
+
+        function _deleteTip(index) {
+            vm.helpJson.tips.content.splice(index, 1);
+            vm.helpJson.tips.content.forEach(function (tip, i) {
+                tip.index = i;
+            })
+        }
+
+        function ok() {
+            if (vm.helpJson.problems.fb_pwd && !vm.helpJson.problems.fb_pwd_location) {
+                MsgUtil.toastWarn("忘记密码链接不能为空");
+                return;
+            }
+            var json = {
+                tips: {
+                    title: "",
+                    content: []
+                },
+                problems: {
+                    fb_pwd: "0",
+                    call_help: "0"
+                }
+            };
+            if (vm.helpJson.problems.call_help) {
+                json.problems.call_help = "1";
+            } else {
+                json.problems.call_help = "0";
+            }
+
+            if (vm.helpJson.problems.fb_pwd) {
+                json.problems.fb_pwd = "1";
+                json.problems.fb_pwd_location = vm.helpJson.problems.fb_pwd_location;
+            } else {
+                json.problems.fb_pwd = "0";
+            }
+            if (vm.helpJson.tips.content.length < 1 && !vm.helpJson.tips.title) {
+                _savHelpJson(json);
+                return;
+            }
+
+            if (!vm.helpJson.tips.title) {
+                MsgUtil.toastWarn("请输入标题");
+                return;
+            }
+            json.tips.title = vm.helpJson.tips.title;
+            if (vm.helpJson.tips.content.length < 1) {
+                MsgUtil.toastWarn("请输入至少一条提示");
+                return;
+            }
+            for (var i = 0; i < vm.helpJson.tips.content.length; i++) {
+                var tip = vm.helpJson.tips.content[i];
+                if (!tip.txt) {
+                    MsgUtil.toastWarn("提示" + (i + 1) + "内容不能为空");
+                    return;
+                }
+                if (tip.location == "") {
+                    MsgUtil.toastWarn("提示" + (i + 1) + "链接不能为空");
+                    return;
+                }
+            }
+
+            vm.helpJson.tips.content.forEach(function (data, i) {
+                var tip = {
+                    txt: data.txt
+                };
+                if (data.location) {
+                    tip.location = data.location;
+                }
+                if (data.txt || data.location) {
+                    json.tips.content.push(tip);
+                }
+            });
+
+            _savHelpJson(json);
+        }
+
+        function _savHelpJson(json) {
+            var helpStr = JSON.stringify(json);
+            var params = {
+                cityCode: vm.cityCode,
+                helpJson: helpStr
+            };
+            var url = WEB_URL + "/help/save/shebao";
+            $http.post(url, params).success(function (json) {
                 if (json && json.success && json.data) {
                     var data = json.data;
                     MsgUtil.toastSuccess(data);

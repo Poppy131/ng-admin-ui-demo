@@ -2335,7 +2335,7 @@ router.post('/city/tree', function (req, res) {
 router.post('/city/save/:code', function (req, res) {
     res.json({
         success: true,
-        data:  "保存成功"
+        data: "保存成功"
     });
 });
 
@@ -2354,6 +2354,20 @@ router.post('/city/view/:code', function (req, res) {
             "updateTime": 1498482044000,
             "websiteUrl": "http://220.179.13.107/webeps/logon/logon.jsp"
         }
+    });
+});
+
+router.post('/help/view/shebao', function (req, res) {
+    res.json({
+        "data": "{\"tips\":{\"title\":\"如何查询？\",\"content\":[{\"txt\":\"若您尚未登录过请点击新用户注册，按新用户帮助其中的步骤完成登录密码的设置。\"},{\"txt\":\"新用户注册\",\"location\":\"http://www.bjrbj.gov.cn/csibiz/urbmi/gerenreg1.jsp\"}]},\"problems\":{\"fb_pwd\":\"1\",\"call_help\":\"1\",\"fb_pwd_location\":\"http://www.bjrbj.gov.cn/csibiz/urbmi/reset_password.jsp\"}}",
+        "success": true
+    });
+});
+
+router.post('/help/save/shebao', function (req, res) {
+    res.json({
+        success: true,
+        data: "保存成功"
     });
 });
 
