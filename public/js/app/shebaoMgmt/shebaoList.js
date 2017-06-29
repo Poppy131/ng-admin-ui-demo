@@ -131,7 +131,6 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             size: 'lg',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'shebaoList-popup',
             resolve: {
                 cityCode: function () {
                     return angular.copy(code);
@@ -157,7 +156,6 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             size: 'lg',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'shebaoList-popup',
             resolve: {
                 cityCode: function () {
                     return angular.copy(code);
