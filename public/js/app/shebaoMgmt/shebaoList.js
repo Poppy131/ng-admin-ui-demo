@@ -15,6 +15,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
 
     vm.editSbCityErrorTemplate = _editSbCityErrorTemplate;
     vm.editSbCityHelpTemplate = _editSbCityHelpTemplate;
+    vm.viewDetail = _viewDetail;
 
     vm.refreshGrid = _refreshGrid;
 
@@ -30,22 +31,44 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             datatype: 'local',
             colModel: [
                 {key: true, name: 'code', hidden: true, align: 'center'},
-                {label: '编号', name: 'code', sortable: false},
-                {label: '城市名', name: 'name', sortable: false},
-                {label: '省份', name: 'pName', sortable: false},
-                {label: '官网网址', name: 'websiteUrl', sortable: false},
-                {label: '状态', name: 'isActive', sortable: false, formatter: _statusFormatter},
-                {label: '错误描述', name: 'errorDescription', sortable: false},
-                {label: '错误账户', name: 'errorExample', sortable: false},
-                {label: '备注', name: 'memo', sortable: false},
-                {label: '操作', name: 'act', align: 'center', sortable: false}
+                {label: '编号', name: 'code', sortable: false, width: 185},
+                {label: '城市名', name: 'name', sortable: false, width: 125},
+                {label: '省份', name: 'pName', sortable: false, width: 80},
+                {label: '状态', name: 'isActive', sortable: false, formatter: _statusFormatter, width: 80},
+                {label: '官网网址', name: 'websiteUrl', sortable: false, width: 180},
+                {label: '查询参数', name: 'inputJson', sortable: false, formatter: _inputJsonFormatter, width: 180},
+                {label: '帮助提示', name: 'helpJson', sortable: false, width: 180},
+                {label: '错误描述', name: 'errorDescription', sortable: false, width: 120},
+                {label: '错误账户', name: 'errorExample', sortable: false, width: 120},
+                {label: '备注', name: 'memo', sortable: false, width: 120},
+                {label: '操作', name: 'act', align: 'center', sortable: false, width: 290}
             ],
             autowidth: true,
-            shrinkToFit: true,
+            shrinkToFit: false,
             height: 'auto',
             gridComplete: _onGridComplete
         };
         _refreshGrid();
+    }
+
+    function _inputJsonFormatter(cellvalue) {
+        if (!cellvalue) {
+            return '';
+        }
+        var obj = JSON.parse(cellvalue);
+        if (!obj || !obj.forms || !obj.forms[0] || !obj.forms[0].inputs || !obj.forms[0].inputs.length) {
+            return "";
+        }
+        var arr = obj.forms[0].inputs;
+        var str = [];
+        arr.forEach(function (data) {
+            if (data.desc && data.name) {
+                var newObj = {};
+                newObj[data.name] = data.desc;
+                str.push(newObj);
+            }
+        });
+        return JSON.stringify(str);
     }
 
     function _statusFormatter(cellvalue) {
@@ -53,7 +76,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             return '正常';
         }
         if (cellvalue == 0) {
-            return '错误';
+            return '维护中';
         }
         return '';
     }
@@ -65,10 +88,12 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
                 var jqTr = $(this),
                     code = jqTr.attr('id'),
                     jqTds = jqTr.find('td');
-                $compile('<button type="button" class="btn btn-sm btn-default m-r-xs" ng-click="vm.editSbCityHelpTemplate(\'' + code + '\')"> 帮助编辑</button>')($scope)
-                    .appendTo(jqTds.eq(9));
+                $compile('<button type="button" class="btn btn-sm btn-success m-r-xs" ng-click="vm.editSbCityHelpTemplate(\'' + code + '\')"> 帮助编辑</button>')($scope)
+                    .appendTo(jqTds.eq(11));
                 $compile('<button type="button" class="btn btn-sm btn-danger m-r-xs" ng-click="vm.editSbCityErrorTemplate(\'' + code + '\')"> 异常编辑</button>')($scope)
-                    .appendTo(jqTds.eq(9));
+                    .appendTo(jqTds.eq(11));
+                $compile('<button type="button" class="btn btn-sm btn-primary m-r-xs" ng-click="vm.viewDetail(\'' + code + '\')"> 查看详情</button>')($scope)
+                    .appendTo(jqTds.eq(11));
             });
     }
 
@@ -174,13 +199,35 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         });
     }
 
+    function _viewDetail(code) {
+        if (!code) {
+            console.log('code不存在');
+            return;
+        }
+        var modalInstance = $modal.open({
+            templateUrl: 'tpl/shebaoMgmt/popup_edit_sb_details.html',
+            controller: 'sbCityDetailsEditController as vm',
+            size: 'lg',
+            backdrop: 'true',
+            keyboard: false,
+            resolve: {
+                cityCode: function () {
+                    return angular.copy(code);
+                }
+            }
+        });
+        modalInstance.result.then(function (res) {
+            console.info(res);
+        });
+    }
+
 }]);
 
 //社保异常配置
 app.controller('sbCityErrorEditController', ['$compile', '$sce', '$http', '$timeout', '$modalInstance', '$modal', 'cityCode', 'MsgUtil', 'WebConst', 'BlockUI',
     function ($compile, $sce, $http, $timeout, $modalInstance, $modal, cityCode, MsgUtil, WebConst, BlockUI) {
-        var WEB_URL = WebConst.WEB_URL;
         var vm = this, $ = angular.element;
+        var WEB_URL = WebConst.WEB_URL;
 
         vm.cityCode = cityCode;
 
@@ -205,7 +252,7 @@ app.controller('sbCityErrorEditController', ['$compile', '$sce', '$http', '$time
         }
 
         function _getCityDetail(code) {
-            var url = WEB_URL + "/city/view/" + code;
+            var url = WEB_URL + "/city/error/view/" + code;
             BlockUI.mask({animate: true});
             $http.post(url).success(function (json) {
                 BlockUI.unmask();
@@ -289,8 +336,8 @@ app.controller('sbCityErrorEditController', ['$compile', '$sce', '$http', '$time
 //社保帮助配置
 app.controller('sbCityHelpEditController', ['$compile', '$sce', '$http', '$timeout', '$modalInstance', '$modal', 'cityCode', 'MsgUtil', 'WebConst', 'BlockUI',
     function ($compile, $sce, $http, $timeout, $modalInstance, $modal, cityCode, MsgUtil, WebConst, BlockUI) {
-        var WEB_URL = WebConst.WEB_URL;
         var vm = this, $ = angular.element;
+        var WEB_URL = WebConst.WEB_URL;
 
         vm.cityCode = cityCode;
 
@@ -485,6 +532,66 @@ app.controller('sbCityHelpEditController', ['$compile', '$sce', '$http', '$timeo
             if (!MsgUtil.confirm("确定要放弃本次编辑吗？")) {
                 return;
             }
+            $modalInstance.dismiss('cancel');
+        }
+
+    }
+]);
+
+//社保详情
+app.controller('sbCityDetailsEditController', ['$compile', '$sce', '$http', '$timeout', '$modalInstance', '$modal', 'cityCode', 'MsgUtil', 'WebConst', 'BlockUI',
+    function ($compile, $sce, $http, $timeout, $modalInstance, $modal, cityCode, MsgUtil, WebConst, BlockUI) {
+        var vm = this, $ = angular.element;
+        var WEB_URL = WebConst.WEB_URL;
+
+        vm.cityCode = cityCode;
+
+        vm.inputJson = {};
+
+        vm.close = _close;
+
+        _init();
+
+        function _init() {
+            vm.city = {};
+            _getCityDetail(vm.cityCode);
+        }
+
+        function _getCityDetail(code) {
+            var url = WEB_URL + "/city/view/" + code;
+            BlockUI.mask({animate: true});
+            $http.post(url).success(function (json) {
+                BlockUI.unmask();
+                if (json && json.success && json.data) {
+                    vm.city = json.data;
+                    _initJson(json.data);
+                } else {
+                    vm.city = {};
+                }
+            });
+        }
+
+        function _initJson(data) {
+            var _inputJson = data.inputJson;
+            if (!_inputJson) {
+                vm.inputJson = {
+                    forms: []
+                };
+                return;
+            }
+            _inputJson = JSON.parse(_inputJson);
+            if (!_inputJson || !_inputJson.forms || !_inputJson.forms.length) {
+                vm.inputJson = {
+                    forms: []
+                };
+                return;
+            }
+            vm.inputJson = {
+                forms: _inputJson.forms
+            };
+        }
+
+        function _close(){
             $modalInstance.dismiss('cancel');
         }
 

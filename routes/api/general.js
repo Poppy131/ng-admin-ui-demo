@@ -2341,6 +2341,21 @@ router.post('/city/save/:code', function (req, res) {
 
 router.post('/city/view/:code', function (req, res) {
     res.json({
+        "data": {
+            "code": "shaoxing",
+            "errorLogModifierName": "test",
+            "errorLogUpdateTime": 1490862327000,
+            "inputJson": "{\"forms\":[{\"group\":\"nameType\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"姓名登录\"},\r\n{\"group\":\"socialcardType\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"社保卡号\",\"name\":\"socialcard\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"社保卡登录\"}]}",
+            "isActive": 1,
+            "name": "绍兴",
+            "pName": "浙江",
+            "websiteUrl": "http://www.zjsx.si.gov.cn/pages/bsdt/nologin.html"
+        }, "success": true
+    });
+});
+
+router.post('/city/error/view/:code', function (req, res) {
+    res.json({
         success: true,
         data: {
             "code": "anqing",
@@ -2372,158 +2387,158 @@ router.post('/help/save/shebao', function (req, res) {
 });
 
 router.post('/city/filter', function (req, res) {
-    res.json({
-        success: true,
-        data: {
-            "pageData": [
-                {
+    res.json(
+        {
+            "data": {
+                "pageData": [{
                     "code": "aba",
-                    "isActive": 1,
+                    "errorDescription": "测试",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"用户名\",\"name\":\"name\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
+                    "isActive": 0,
                     "name": "阿坝",
                     "pName": "四川",
                     "websiteUrl": "http://119.6.84.89:7001/scwssb/login.jsp"
-                },
-                {
+                }, {
                     "code": "akesu",
+                    "helpJson": "{\"tips\":{\"title\":\"大师\",\"content\":[{\"txt\":\"是滴是滴\",\"location\":\"实打实大师\"},{\"txt\":\"啊啊啊啊啊啊啊啊啊啊\"}]},\"problems\":{\"fb_pwd\":\"1\",\"call_help\":\"1\",\"fb_pwd_location\":\"http://localhost:8082/app/shebaoMgmt/list\"}}",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idcard\"}]}]}",
                     "isActive": 1,
+                    "memo": "啊啊啊啊",
                     "name": "阿克苏",
                     "pName": "新疆",
                     "websiteUrl": "http://218.84.217.117/search/index_zhigong.jsp"
-                },
-                {
+                }, {
                     "code": "alaer",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"身份证号\",\"name\":\"idCard\"},{\"desc\":\"社保号\",\"name\":\"socialCard\"},{\"desc\":\"密码\",\"name\":\"password\"}]}]}",
                     "isActive": 1,
                     "memo": "网上查询未开通",
                     "name": "阿拉尔",
                     "pName": "新疆"
-                },
-                {
+                }, {
                     "code": "alashanmeng",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
                     "isActive": 1,
                     "name": "阿拉善盟",
                     "pName": "内蒙古",
                     "websiteUrl": "http://login.12333k.cn/Cas/login"
-                },
-                {
+                }, {
                     "code": "aletaidi",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"身份证号\",\"name\":\"idCard\"},{\"desc\":\"社保号\",\"name\":\"socialCard\"},{\"desc\":\"密码\",\"name\":\"password\"}]}]}",
                     "isActive": 1,
                     "name": "阿勒泰地",
                     "pName": "新疆"
-                },
-                {
+                }, {
                     "code": "alidiqu",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"用户名\",\"name\":\"name\"},{\"desc\":\"密码\",\"name\":\"password\"}]}]}",
                     "isActive": 1,
                     "name": "阿里地",
                     "pName": "西藏"
-                },
-                {
+                }, {
                     "code": "anding",
+                    "inputJson": "{\"forms\":[{\"group\":\"idcard\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"身份证登录\"},{\"group\":\"socialcard\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"个人编号\",\"name\":\"idcard\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"个人编号登录\"}]}",
                     "isActive": 1,
                     "name": "定安",
                     "pName": "海南",
                     "websiteUrl": "http://www.hi.si.gov.cn/"
-                },
-                {
+                }, {
                     "code": "anhui_suzhou",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
                     "isActive": 1,
                     "memo": "asd",
                     "name": "宿州",
                     "pName": "安徽",
                     "websiteUrl": "http://www.ahsz.hrss.gov.cn/sitefiles/services/cms/page.aspx?s=1&n=30&c=3229"
-                },
-                {
+                }, {
                     "code": "ankangjumin",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"公民身份证号码\",\"name\":\"idcard\"},{\"desc\":\"姓名\",\"name\":\"name\"}]}]}",
                     "isActive": 1,
                     "name": "安康城乡居民",
                     "pName": "陕西",
                     "websiteUrl": "http://117.36.52.39/sxxnbLogin.jsp"
-                },
-                {
+                }, {
                     "code": "ankangzhigong",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"公民身份证号码\",\"name\":\"idcard\"},{\"desc\":\"姓名\",\"name\":\"name\"}]}]}",
                     "isActive": 1,
                     "name": "安康城镇职工",
                     "pName": "陕西",
                     "websiteUrl": "http://117.36.52.39/sxlssLogin.jsp"
-                },
-                {
+                }, {
                     "code": "anqing",
                     "errorDescription": "测试",
                     "errorExample": "{\"name\":\"XXX\",\"idCard\":\"XXXXXXXXXXXXXXXXX\",\"password\":\"xxxxxxxx\"}",
+                    "helpJson": "{\"tips\":{\"title\":\"是滴是滴\",\"content\":[{\"txt\":\"撒啊啊啊啊啊啊啊qewqet54yyjkiujykkkkkk8i78i8888i8i8i8i8i8i\"},{\"txt\":\"asdadasdasd\",\"location\":\"http://localhost:1000/#/app/helpSetting/shebao\"},{\"txt\":\"adasd\"},{\"txt\":\"adasdasfasf\"}]},\"problems\":{\"fb_pwd\":\"1\",\"call_help\":\"1\",\"fb_pwd_location\":\"https://www.sdwfhrss.gov.cn/rsjwz/self/regPage\"}}",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"用户名\",\"name\":\"name\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
                     "isActive": 0,
                     "memo": "test",
                     "name": "安庆",
                     "pName": "安徽",
                     "websiteUrl": "http://220.179.13.107/webeps/logon/logon.jsp"
-                },
-                {
+                }, {
                     "code": "anshan",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"社保号\",\"name\":\"account\"},{\"desc\":\"身份证号\",\"name\":\"idcard\"}]}]}",
                     "isActive": 1,
                     "name": "鞍山",
                     "pName": "辽宁",
                     "websiteUrl": "http://www.asshbx.gov.cn/asweb/cxlog1.jsp"
-                },
-                {
+                }, {
                     "code": "anshun",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idCard\"},{\"desc\":\"密码\",\"name\":\"password\"}]}]}",
                     "isActive": 1,
                     "memo": "没有账号",
                     "name": "安顺",
                     "pName": "贵州",
                     "websiteUrl": "http://220.197.219.121/"
-                },
-                {
+                }, {
                     "code": "anyang",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"用户名\",\"name\":\"name\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
                     "isActive": 1,
                     "name": "安阳",
                     "pName": "河南",
                     "websiteUrl": "http://www.aysmzj.gov.cn/"
-                },
-                {
+                }, {
                     "code": "baicheng",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"用户名\",\"name\":\"name\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
                     "isActive": 1,
                     "name": "白城",
                     "pName": "吉林",
                     "websiteUrl": "https://wssb.jlsi.gov.cn:8443/login.jsp"
-                },
-                {
+                }, {
                     "code": "baise",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
                     "isActive": 1,
                     "name": "百色",
                     "pName": "广西",
                     "websiteUrl": "http://gx.si.gov.cn:8001/siweb/login.do?method=person"
-                },
-                {
+                }, {
                     "code": "baisha",
+                    "inputJson": "{\"forms\":[{\"group\":\"idcard\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"身份证登录\"},{\"group\":\"socialcard\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"个人编号\",\"name\":\"idcard\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"个人编号登录\"}]}",
                     "isActive": 1,
                     "name": "白沙",
                     "pName": "海南",
                     "websiteUrl": "http://www.hi.si.gov.cn/"
-                },
-                {
+                }, {
                     "code": "baishan",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"用户名\",\"name\":\"name\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
                     "isActive": 1,
                     "name": "白山",
                     "pName": "吉林",
                     "websiteUrl": "https://wssb.jlsi.gov.cn:8443/login.jsp"
-                },
-                {
+                }, {
                     "code": "baiyin",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"身份证号\",\"name\":\"idCard\"},{\"desc\":\"社保号\",\"name\":\"socialCard\"},{\"desc\":\"密码\",\"name\":\"password\"}]}]}",
                     "isActive": 1,
                     "name": "白银",
                     "pName": "甘肃"
-                },
-                {
+                }, {
                     "code": "baoding",
+                    "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"身份证号\",\"name\":\"idCard\"},{\"desc\":\"社保号\",\"name\":\"socialCard\"},{\"desc\":\"密码\",\"name\":\"password\"}]}]}",
                     "isActive": 1,
                     "name": "保定",
                     "pName": "河北"
-                }
-            ],
-            "pageNumber": 1,
-            "pageSize": 20,
-            "totalCount": 428,
-            "totalPages": 22
+                }], "pageNumber": 1, "pageSize": 20, "totalCount": 428, "totalPages": 22
+            }, "success": true
         }
-    });
+    );
 });
 
 module.exports = router;
