@@ -73,6 +73,11 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
     }
 
     function _refreshGrid() {
+        vm.searchOpts = {
+            pageSize: vm.searchOpts.pageSize,
+            maxSize: 5,
+            txt: ""
+        };
         if (vm.province && vm.province.name) {
             vm.searchOpts.province = vm.province.name;
         }
