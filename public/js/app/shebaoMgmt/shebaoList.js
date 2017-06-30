@@ -101,7 +101,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         vm.searchOpts = {
             pageSize: vm.searchOpts.pageSize,
             maxSize: 5,
-            txt: ""
+            txt: vm.searchOpts.txt
         };
         if (vm.province && vm.province.name) {
             vm.searchOpts.province = vm.province.name;
@@ -115,6 +115,12 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         vm.searchOpts.pageNumber = vm.pageNumber;
         if (!vm.searchOpts.pageNumber) {
             vm.searchOpts.pageNumber = 1;
+        }
+        if (!vm.searchOpts.pageSize) {
+            vm.searchOpts.pageSize = WebConst.defaultQueryPageSize;
+        }
+        if (!vm.searchOpts.txt) {
+            vm.searchOpts.txt = "";
         }
         var url = WEB_URL + "/city/filter";
         BlockUI.mask({animate: true});
