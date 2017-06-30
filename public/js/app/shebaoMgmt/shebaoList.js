@@ -547,6 +547,7 @@ app.controller('sbCityDetailsEditController', ['$compile', '$sce', '$http', '$ti
         vm.cityCode = cityCode;
 
         vm.inputJson = {};
+        vm.helpJson = {};
 
         vm.close = _close;
 
@@ -572,26 +573,47 @@ app.controller('sbCityDetailsEditController', ['$compile', '$sce', '$http', '$ti
         }
 
         function _initJson(data) {
-            var _inputJson = data.inputJson;
+            _initInputJson(data.inputJson);
+            _initHelpJson(data.helpJson);
+        }
+
+        function _initHelpJson(_inputJson) {
+            vm.helpJson = {
+                tips: {},
+                problems: {},
+                closed: true
+            };
             if (!_inputJson) {
-                vm.inputJson = {
-                    forms: []
-                };
+                return;
+            }
+            _inputJson = JSON.parse(_inputJson);
+            if (!_inputJson || !(_inputJson.tips || _inputJson.problems)) {
+                return;
+            }
+            if (_inputJson.tips) {
+                vm.helpJson.tips = _inputJson.tips;
+            }
+            if (_inputJson.problems) {
+                vm.helpJson.problems = _inputJson.problems;
+            }
+        }
+
+        function _initInputJson(_inputJson) {
+            vm.inputJson = {
+                forms: [],
+                closed: true
+            };
+            if (!_inputJson) {
                 return;
             }
             _inputJson = JSON.parse(_inputJson);
             if (!_inputJson || !_inputJson.forms || !_inputJson.forms.length) {
-                vm.inputJson = {
-                    forms: []
-                };
                 return;
             }
-            vm.inputJson = {
-                forms: _inputJson.forms
-            };
+            vm.inputJson.forms = _inputJson.forms;
         }
 
-        function _close(){
+        function _close() {
             $modalInstance.dismiss('cancel');
         }
 

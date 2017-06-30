@@ -2342,14 +2342,22 @@ router.post('/city/save/:code', function (req, res) {
 router.post('/city/view/:code', function (req, res) {
     res.json({
         "data": {
-            "code": "shaoxing",
+            "code": "anqing",
+            "errorDescription": "测试",
+            "errorExample": "{\"name\":\"XXX\",\"idCard\":\"XXXXXXXXXXXXXXXXX\",\"password\":\"xxxxxxxx\"}",
             "errorLogModifierName": "test",
-            "errorLogUpdateTime": 1490862327000,
-            "inputJson": "{\"forms\":[{\"group\":\"nameType\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"姓名\",\"name\":\"name\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"姓名登录\"},\r\n{\"group\":\"socialcardType\",\"inputs\":[{\"desc\":\"身份证号\",\"name\":\"idcard\"},{\"desc\":\"社保卡号\",\"name\":\"socialcard\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}],\"desc\":\"社保卡登录\"}]}",
-            "isActive": 1,
-            "name": "绍兴",
-            "pName": "浙江",
-            "websiteUrl": "http://www.zjsx.si.gov.cn/pages/bsdt/nologin.html"
+            "errorLogUpdateTime": 1498482044000,
+            "helpJson": "{\"tips\":{\"title\":\"是滴是滴\",\"content\":[{\"txt\":\"撒啊啊啊啊啊啊啊qewqet54yyjkiujykkkkkk8i78i8888i8i8i8i8i8i\"},{\"txt\":\"asdadasdasd\",\"location\":\"http://localhost:1000/#/app/helpSetting/shebao\"},{\"txt\":\"adasd\"},{\"txt\":\"adasdasfasf\"}]},\"problems\":{\"fb_pwd\":\"1\",\"call_help\":\"1\",\"fb_pwd_location\":\"https://www.sdwfhrss.gov.cn/rsjwz/self/regPage\"}}",
+            "helpModifierName": "test",
+            "helpUpdateTime": 1498477479000,
+            "inputJson": "{\"forms\":[{\"group\":\"base\",\"inputs\":[{\"desc\":\"用户名\",\"name\":\"name\"},{\"desc\":\"密码\",\"name\":\"password\"},{\"desc\":\"验证码\",\"name\":\"vcode\"}]}]}",
+            "isActive": 0,
+            "isOpen": 1,
+            "memo": "test",
+            "name": "安庆",
+            "pName": "安徽",
+            "spiderOk": 1,
+            "websiteUrl": "http://220.179.13.107/webeps/logon/logon.jsp"
         }, "success": true
     });
 });
