@@ -26,22 +26,28 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         vm.province = {};
         vm.city = {};
         vm.isActive = -1;
+        vm.isOpen = -1;
+        vm.spiderOk = -1;
+        vm.memo = -1;
+        vm.inputJson = "";
         _getCitiesTree();
         vm.jqGridConfig = {
             datatype: 'local',
             colModel: [
                 {key: true, name: 'code', hidden: true, align: 'center'},
-                {label: '编号', name: 'code', sortable: false, width: 185},
+                {label: '编号', name: 'code', sortable: false, width: 105},
                 {label: '城市名', name: 'name', sortable: false, width: 125},
-                {label: '省份', name: 'pName', sortable: false, width: 80},
-                {label: '状态', name: 'isActive', sortable: false, formatter: _statusFormatter, width: 80},
+                {label: '省份', name: 'pName', sortable: false, width: 100},
+                {label: '是否正常', name: 'isActive', sortable: false, formatter: _isOrNotFormatter, width: 100},
+                {label: '是否开通', name: 'isOpen', sortable: false, formatter: _isOrNotFormatter, width: 100},
+                {label: '是否抓取', name: 'spiderOk', sortable: false, formatter: _isOrNotFormatter, width: 100},
                 {label: '官网网址', name: 'websiteUrl', sortable: false, width: 180},
                 {label: '查询参数', name: 'inputJson', sortable: false, formatter: _inputJsonFormatter, width: 180},
-                {label: '帮助提示', name: 'helpJson', sortable: false, width: 180},
-                {label: '错误描述', name: 'errorDescription', sortable: false, width: 120},
-                {label: '错误账户', name: 'errorExample', sortable: false, width: 120},
-                {label: '备注', name: 'memo', sortable: false, width: 120},
-                {label: '操作', name: 'act', align: 'center', sortable: false, width: 290}
+                {label: '帮助提示', name: 'helpJson', sortable: false, width: 100},
+                {label: '错误描述', name: 'errorDescription', sortable: false, width: 100},
+                {label: '错误账户', name: 'errorExample', sortable: false, width: 100},
+                {label: '备注', name: 'memo', sortable: false, width: 100},
+                {label: '操作', name: 'act', align: 'center', sortable: false, width: 270}
             ],
             autowidth: true,
             shrinkToFit: false,
@@ -60,23 +66,25 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             return "";
         }
         var arr = obj.forms[0].inputs;
-        var str = [];
-        arr.forEach(function (data) {
+        var str = "";
+        arr.forEach(function (data, index) {
             if (data.desc && data.name) {
-                var newObj = {};
-                newObj[data.name] = data.desc;
-                str.push(newObj);
+                if (index == 0) {
+                    str += data.desc;
+                } else {
+                    str += ", " + data.desc;
+                }
             }
         });
-        return JSON.stringify(str);
+        return str;
     }
 
-    function _statusFormatter(cellvalue) {
+    function _isOrNotFormatter(cellvalue) {
         if (cellvalue == 1) {
-            return '正常';
+            return '是';
         }
         if (cellvalue == 0) {
-            return '维护中';
+            return '否';
         }
         return '';
     }
@@ -89,11 +97,11 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
                     code = jqTr.attr('id'),
                     jqTds = jqTr.find('td');
                 $compile('<button type="button" class="btn btn-sm btn-success m-r-xs" ng-click="vm.editSbCityHelpTemplate(\'' + code + '\')"> 帮助编辑</button>')($scope)
-                    .appendTo(jqTds.eq(11));
+                    .appendTo(jqTds.eq(13));
                 $compile('<button type="button" class="btn btn-sm btn-danger m-r-xs" ng-click="vm.editSbCityErrorTemplate(\'' + code + '\')"> 异常编辑</button>')($scope)
-                    .appendTo(jqTds.eq(11));
+                    .appendTo(jqTds.eq(13));
                 $compile('<button type="button" class="btn btn-sm btn-primary m-r-xs" ng-click="vm.viewDetail(\'' + code + '\')"> 查看详情</button>')($scope)
-                    .appendTo(jqTds.eq(11));
+                    .appendTo(jqTds.eq(13));
             });
     }
 
@@ -103,6 +111,18 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
             maxSize: 5,
             txt: vm.searchOpts.txt
         };
+        if (vm.isOpen == 1 || vm.isOpen == 0) {
+            vm.searchOpts.isOpen = vm.isOpen;
+        }
+        if (vm.spiderOk == 1 || vm.spiderOk == 0) {
+            vm.searchOpts.spiderOk = vm.spiderOk;
+        }
+        if (vm.memo == 1 || vm.memo == 0) {
+            vm.searchOpts.memo = vm.memo;
+        }
+        if (vm.inputJson) {
+            vm.searchOpts.inputJson = vm.inputJson;
+        }
         if (vm.province && vm.province.name) {
             vm.searchOpts.province = vm.province.name;
         }
@@ -122,6 +142,7 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         if (!vm.searchOpts.txt) {
             vm.searchOpts.txt = "";
         }
+        console.info(vm.searchOpts);
         var url = WEB_URL + "/city/filter";
         BlockUI.mask({animate: true});
         $http.post(url, vm.searchOpts).success(function (json) {
