@@ -28,7 +28,6 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         vm.isActive = -1;
         vm.isOpen = -1;
         vm.spiderOk = -1;
-        vm.memo = -1;
         vm.inputJson = "";
         _getCitiesTree();
         vm.jqGridConfig = {
@@ -117,12 +116,6 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         if (vm.spiderOk == 1 || vm.spiderOk == 0) {
             vm.searchOpts.spiderOk = vm.spiderOk;
         }
-        if (vm.memo == 1 || vm.memo == 0) {
-            vm.searchOpts.memo = vm.memo;
-        }
-        if (vm.inputJson) {
-            vm.searchOpts.inputJson = vm.inputJson;
-        }
         if (vm.province && vm.province.name) {
             vm.searchOpts.province = vm.province.name;
         }
@@ -142,7 +135,6 @@ app.controller('ShebaoListCtrl', ['$scope', '$http', 'WebConst', 'BlockUI', '$co
         if (!vm.searchOpts.txt) {
             vm.searchOpts.txt = "";
         }
-        console.info(vm.searchOpts);
         var url = WEB_URL + "/city/filter";
         BlockUI.mask({animate: true});
         $http.post(url, vm.searchOpts).success(function (json) {
