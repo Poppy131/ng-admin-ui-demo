@@ -4,6 +4,8 @@ angular.module('app')
     .constant('WebConst', {
         // API接口的基地址
         WEB_URL: '/api/general',
+        //图片地址
+        MEDIA_URL: '',
         // 登录/注销，etc
         URI_LOGIN: '/login',
         URI_LOGOUT: '/logout',
@@ -18,21 +20,9 @@ angular.module('app')
         keepSessionIfBrowserClosed: true,
         // 预先配置的图片分类
         ImageCategoryDef: {
-            ID_CARD_PIC: {
-                id: 2,
-                name: '身份证'
-            },
-            QR_CODE: {
-                id: 3,
-                name: '二维码'
-            },
             AVATAR_IMAGE: {
-                id: 4,
+                id: 1,
                 name: '个人头像'
-            },
-            PAY_VOUCHER: {
-                id:9,
-                name: '用户凭证'
             }
         },
         'cnzz' : {

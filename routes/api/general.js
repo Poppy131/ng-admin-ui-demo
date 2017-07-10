@@ -3,6 +3,16 @@ var express = require('express'),
 
 var router = express.Router();
 
+router.post('/admin/user/view', function (req, res) {
+    res.json({
+        success: true,
+        data: {
+            name: 'zcjcsl',
+            realName: "aaaa"
+        }
+    });
+});
+
 router.post('/city/tree', function (req, res) {
     res.json({
         success: true,
